@@ -3,403 +3,192 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Driftly — drift somewhere new</title>
+<title>Curious Crow — the internet's best kept secrets</title>
+<meta name="description" content="Hand-picked weird, wonderful, and wildly interesting websites. One click. No algorithm. Just explore."/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  :root {
-    --bg: #0a0a0a;
-    --surface: #111111;
-    --surface2: #1a1a1a;
-    --border: rgba(255,255,255,0.08);
-    --text: #f0ede8;
-    --muted: rgba(240,237,232,0.45);
-    --accent: #c8f060;
-    --accent-dim: rgba(200,240,96,0.12);
-    --tag-bg: rgba(255,255,255,0.06);
-    --radius: 16px;
-    --font-display: 'Instrument Serif', Georgia, serif;
-    --font-body: 'DM Sans', system-ui, sans-serif;
-  }
+:root {
+  --bg: #0a0a0a;
+  --surface: #111111;
+  --surface2: #181818;
+  --border: rgba(255,255,255,0.07);
+  --border-hover: rgba(255,255,255,0.18);
+  --text: #f0ede8;
+  --muted: rgba(240,237,232,0.42);
+  --accent: #c8f060;
+  --accent-dim: rgba(200,240,96,0.1);
+  --accent-glow: rgba(200,240,96,0.22);
+  --tag-bg: rgba(255,255,255,0.05);
+  --radius: 18px;
+  --font-display: 'Instrument Serif', Georgia, serif;
+  --font-body: 'DM Sans', system-ui, sans-serif;
+}
 
-  html, body {
-    height: 100%;
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--font-body);
-    font-size: 15px;
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
-  }
+html, body { height: 100%; background: var(--bg); color: var(--text); font-family: var(--font-body); font-size: 15px; line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
 
-  /* ── grain overlay ── */
-  body::before {
-    content: '';
-    position: fixed; inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
-    pointer-events: none; z-index: 999; opacity: 0.6;
-  }
+/* grain */
+body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; opacity: 0.55; }
 
-  /* ── layout ── */
-  .shell {
-    min-height: 100vh;
-    display: grid;
-    grid-template-rows: auto 1fr auto;
-    max-width: 960px;
-    margin: 0 auto;
-    padding: 0 24px;
-  }
+/* ── shell ── */
+.shell { min-height: 100vh; display: grid; grid-template-rows: auto 1fr auto; max-width: 980px; margin: 0 auto; padding: 0 24px; }
 
-  /* ── header ── */
-  header {
-    padding: 32px 0 0;
-    display: flex;
-    align-items: baseline;
-    gap: 16px;
-  }
+/* ── header ── */
+header { padding: 30px 0 0; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+.wordmark { font-family: var(--font-display); font-size: 24px; font-style: italic; letter-spacing: -0.02em; color: var(--text); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+.wordmark .crow { font-style: normal; font-size: 20px; }
+.badge-verified { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 500; color: var(--accent); background: var(--accent-dim); border: 1px solid rgba(200,240,96,0.2); padding: 4px 10px; border-radius: 100px; letter-spacing: 0.03em; }
+.badge-verified::before { content: '✦'; font-size: 9px; }
 
-  .wordmark {
-    font-family: var(--font-display);
-    font-size: 26px;
-    font-style: italic;
-    letter-spacing: -0.02em;
-    color: var(--text);
-    text-decoration: none;
-  }
+/* ── hero ── */
+main { display: flex; flex-direction: column; align-items: center; padding: 52px 0 40px; gap: 36px; }
+.hero { text-align: center; max-width: 640px; }
+.hero h1 { font-family: var(--font-display); font-size: clamp(36px, 6.5vw, 68px); font-style: italic; font-weight: 400; line-height: 1.06; letter-spacing: -0.03em; color: var(--text); margin-bottom: 16px; }
+.hero h1 em { color: var(--accent); font-style: normal; }
+.hero p { font-size: 15px; color: var(--muted); font-weight: 300; max-width: 360px; margin: 0 auto; }
 
-  .wordmark span {
-    color: var(--accent);
-    font-style: normal;
-  }
+/* ── cta ── */
+.cta-row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; justify-content: center; }
+.drift-btn { position: relative; display: inline-flex; align-items: center; gap: 10px; background: var(--accent); color: #0a0a0a; font-family: var(--font-body); font-size: 15px; font-weight: 500; padding: 15px 34px; border-radius: 100px; border: none; cursor: pointer; transition: transform 0.18s ease, box-shadow 0.18s ease; letter-spacing: -0.01em; }
+.drift-btn:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 6px 28px var(--accent-glow), 0 0 0 1px rgba(200,240,96,0.3); }
+.drift-btn:active { transform: scale(0.97); }
+.drift-btn .arrow { transition: transform 0.2s ease; }
+.drift-btn:hover .arrow { transform: translateX(4px); }
+.count-pill { font-size: 12px; color: var(--muted); font-weight: 300; }
+.count-pill strong { color: var(--text); font-weight: 500; }
 
-  .tagline {
-    font-size: 13px;
-    color: var(--muted);
-    font-weight: 300;
-    letter-spacing: 0.02em;
-  }
+/* ── filters ── */
+.filter-row { display: flex; flex-wrap: wrap; gap: 7px; justify-content: center; max-width: 580px; }
+.filter-btn { padding: 6px 15px; border-radius: 100px; border: 1px solid var(--border); background: transparent; color: var(--muted); font-family: var(--font-body); font-size: 12px; font-weight: 400; cursor: pointer; transition: all 0.15s ease; letter-spacing: 0.01em; }
+.filter-btn:hover { border-color: var(--border-hover); color: var(--text); }
+.filter-btn.active { background: var(--accent-dim); border-color: rgba(200,240,96,0.35); color: var(--accent); }
 
-  /* ── main ── */
-  main {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 48px 0 32px;
-    gap: 32px;
-  }
+/* ── grid label ── */
+.grid-label { width: 100%; display: flex; align-items: center; gap: 12px; }
+.grid-label span { font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+.grid-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
-  /* ── hero text ── */
-  .hero {
-    text-align: center;
-  }
+/* ── cards ── */
+.cards-grid { width: 100%; display: grid; grid-template-columns: repeat(auto-fill, minmax(268px, 1fr)); gap: 12px; }
 
-  .hero h1 {
-    font-family: var(--font-display);
-    font-size: clamp(40px, 7vw, 72px);
-    font-style: italic;
-    font-weight: 400;
-    line-height: 1.05;
-    letter-spacing: -0.03em;
-    color: var(--text);
-    margin-bottom: 14px;
-  }
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+  position: relative;
+  overflow: hidden;
+  /* mystery card — content hidden until hover */
+}
 
-  .hero h1 em {
-    color: var(--accent);
-    font-style: normal;
-  }
+/* top reveal strip — always visible */
+.card-peek {
+  padding: 18px 20px 14px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+.card-name { font-family: var(--font-display); font-style: italic; font-size: 19px; color: var(--text); line-height: 1.2; }
+.card-icon-btn { width: 32px; height: 32px; border-radius: 50%; background: var(--tag-bg); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 14px; color: var(--muted); flex-shrink: 0; transition: all 0.15s ease; }
 
-  .hero p {
-    font-size: 16px;
-    color: var(--muted);
-    font-weight: 300;
-    max-width: 380px;
-    margin: 0 auto;
-  }
+/* hidden body — revealed on hover */
+.card-reveal {
+  padding: 0 20px 18px;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.28s ease, opacity 0.22s ease, padding 0.22s ease;
+}
+.card:hover .card-reveal { max-height: 200px; opacity: 1; padding: 0 20px 18px; }
+.card:hover .card-icon-btn { background: var(--accent-dim); border-color: rgba(200,240,96,0.3); color: var(--accent); transform: rotate(45deg); }
 
-  /* ── drift button ── */
-  .drift-btn {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    background: var(--accent);
-    color: #0a0a0a;
-    font-family: var(--font-body);
-    font-size: 16px;
-    font-weight: 500;
-    padding: 16px 36px;
-    border-radius: 100px;
-    border: none;
-    cursor: pointer;
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
-    box-shadow: 0 0 0 0 rgba(200,240,96,0.3);
-    letter-spacing: -0.01em;
-    text-decoration: none;
-  }
+.card-desc { font-size: 13px; color: var(--muted); font-weight: 300; line-height: 1.55; margin-bottom: 12px; }
+.card-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+.tag { font-size: 11px; font-weight: 500; padding: 3px 9px; border-radius: 100px; background: var(--tag-bg); color: var(--muted); border: 1px solid var(--border); letter-spacing: 0.02em; }
 
-  .drift-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 32px rgba(200,240,96,0.25);
-  }
+/* hover glow */
+.card::after { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 50% 0%, rgba(200,240,96,0.06), transparent 65%); opacity: 0; transition: opacity 0.2s ease; pointer-events: none; }
+.card:hover { transform: translateY(-4px); border-color: rgba(200,240,96,0.18); box-shadow: 0 12px 40px rgba(0,0,0,0.4); }
+.card:hover::after { opacity: 1; }
 
-  .drift-btn:active {
-    transform: translateY(0px) scale(0.98);
-  }
+/* lucky pulse */
+@keyframes lucky-pulse { 0%,100% { border-color: rgba(200,240,96,0.15); box-shadow: none; } 50% { border-color: rgba(200,240,96,0.7); box-shadow: 0 0 28px var(--accent-glow); } }
+.card.lucky { animation: lucky-pulse 0.7s ease 2; }
+.card.hidden { display: none; }
 
-  .drift-btn .arrow {
-    font-size: 18px;
-    transition: transform 0.2s ease;
-  }
+/* ── iframe overlay ── */
+.overlay {
+  position: fixed; inset: 0; z-index: 1000;
+  display: flex; flex-direction: column;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.22s ease;
+}
+.overlay.open { opacity: 1; pointer-events: all; }
 
-  .drift-btn:hover .arrow {
-    transform: translateX(3px);
-  }
+.overlay-bar {
+  height: 52px; min-height: 52px;
+  background: #0e0e0e;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center;
+  padding: 0 16px; gap: 12px;
+  flex-shrink: 0;
+  z-index: 1;
+}
+.overlay-wordmark { font-family: var(--font-display); font-style: italic; font-size: 18px; color: var(--text); text-decoration: none; }
+.overlay-site-name { font-size: 13px; color: var(--muted); font-weight: 300; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.overlay-btn { display: inline-flex; align-items: center; gap: 6px; padding: 7px 16px; border-radius: 100px; border: 1px solid var(--border); background: transparent; color: var(--muted); font-family: var(--font-body); font-size: 12px; font-weight: 400; cursor: pointer; transition: all 0.15s; white-space: nowrap; }
+.overlay-btn:hover { border-color: var(--border-hover); color: var(--text); }
+.overlay-btn.next { background: var(--accent); color: #0a0a0a; border-color: transparent; font-weight: 500; }
+.overlay-btn.next:hover { box-shadow: 0 4px 16px var(--accent-glow); transform: translateY(-1px); }
+.overlay-btn.close-btn { font-size: 16px; padding: 7px 12px; }
 
-  /* ── filter row ── */
-  .filter-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    justify-content: center;
-    max-width: 600px;
-  }
+.overlay-frame { flex: 1; width: 100%; border: none; background: #fff; }
+.overlay-load { position: absolute; inset: 52px 0 0; display: flex; align-items: center; justify-content: center; background: var(--bg); flex-direction: column; gap: 12px; }
+.overlay-load p { color: var(--muted); font-size: 13px; font-weight: 300; }
+.spinner { width: 28px; height: 28px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.7s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
 
-  .filter-btn {
-    padding: 7px 16px;
-    border-radius: 100px;
-    border: 1px solid var(--border);
-    background: var(--tag-bg);
-    color: var(--muted);
-    font-family: var(--font-body);
-    font-size: 13px;
-    font-weight: 400;
-    cursor: pointer;
-    transition: all 0.15s ease;
-    letter-spacing: 0.01em;
-  }
+/* ── footer ── */
+footer { padding: 22px 0 30px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; border-top: 1px solid var(--border); }
+.footer-text { font-size: 12px; color: var(--muted); font-weight: 300; }
 
-  .filter-btn:hover {
-    border-color: rgba(255,255,255,0.2);
-    color: var(--text);
-  }
-
-  .filter-btn.active {
-    background: var(--accent-dim);
-    border-color: rgba(200,240,96,0.35);
-    color: var(--accent);
-  }
-
-  /* ── divider ── */
-  .divider {
-    width: 100%;
-    height: 1px;
-    background: var(--border);
-  }
-
-  /* ── grid ── */
-  .grid-label {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .grid-label span {
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
-
-  .grid-label::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-  }
-
-  .cards-grid {
-    width: 100%;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 12px;
-  }
-
-  /* ── card ── */
-  .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 20px;
-    cursor: pointer;
-    transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
-    text-decoration: none;
-    display: block;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle at 50% 0%, rgba(200,240,96,0.05), transparent 60%);
-    opacity: 0;
-    transition: opacity 0.2s ease;
-  }
-
-  .card:hover {
-    transform: translateY(-3px);
-    border-color: rgba(200,240,96,0.2);
-    background: var(--surface2);
-  }
-
-  .card:hover::before {
-    opacity: 1;
-  }
-
-  .card-top {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 8px;
-    margin-bottom: 10px;
-  }
-
-  .card-name {
-    font-family: var(--font-display);
-    font-style: italic;
-    font-size: 18px;
-    color: var(--text);
-    line-height: 1.2;
-  }
-
-  .card-arrow {
-    font-size: 16px;
-    color: var(--muted);
-    flex-shrink: 0;
-    transition: transform 0.15s ease, color 0.15s ease;
-    margin-top: 2px;
-  }
-
-  .card:hover .card-arrow {
-    transform: translate(2px, -2px);
-    color: var(--accent);
-  }
-
-  .card-desc {
-    font-size: 13px;
-    color: var(--muted);
-    font-weight: 300;
-    line-height: 1.55;
-    margin-bottom: 14px;
-  }
-
-  .card-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
-  }
-
-  .tag {
-    font-size: 11px;
-    font-weight: 500;
-    padding: 3px 9px;
-    border-radius: 100px;
-    background: var(--tag-bg);
-    color: var(--muted);
-    letter-spacing: 0.02em;
-    border: 1px solid var(--border);
-  }
-
-  /* ── hidden cards (filtered out) ── */
-  .card.hidden {
-    display: none;
-  }
-
-  /* ── footer ── */
-  footer {
-    padding: 24px 0 32px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 12px;
-    border-top: 1px solid var(--border);
-  }
-
-  .footer-text {
-    font-size: 12px;
-    color: var(--muted);
-    font-weight: 300;
-  }
-
-  .footer-text a {
-    color: var(--muted);
-    text-decoration: underline;
-    text-underline-offset: 3px;
-  }
-
-  .count-badge {
-    font-size: 12px;
-    color: var(--muted);
-    font-weight: 300;
-  }
-
-  .count-badge strong {
-    color: var(--accent);
-    font-weight: 500;
-  }
-
-  /* ── lucky highlight ── */
-  @keyframes pulse-border {
-    0%, 100% { border-color: rgba(200,240,96,0.2); }
-    50%       { border-color: rgba(200,240,96,0.7); box-shadow: 0 0 24px rgba(200,240,96,0.15); }
-  }
-
-  .card.lucky {
-    animation: pulse-border 0.8s ease 2;
-  }
-
-  /* ── responsive ── */
-  @media (max-width: 600px) {
-    .shell { padding: 0 16px; }
-    header { flex-direction: column; gap: 4px; }
-    .cards-grid { grid-template-columns: 1fr; }
-    .hero h1 { font-size: 38px; }
-    footer { flex-direction: column; align-items: flex-start; }
-  }
+/* ── responsive ── */
+@media (max-width: 600px) {
+  .shell { padding: 0 14px; }
+  .cards-grid { grid-template-columns: 1fr; }
+  .hero h1 { font-size: 36px; }
+  .cta-row { flex-direction: column; }
+  footer { flex-direction: column; }
+}
 </style>
 </head>
 <body>
 <div class="shell">
 
   <header>
-    <a class="wordmark" href="#">Drift<span>ly</span></a>
-    <span class="tagline">no search. no plan. just drift.</span>
+    <a class="wordmark" href="#"><span class="crow">🐦‍⬛</span> Curious Crow</a>
+    <span class="badge-verified">Verified by humans &nbsp;·&nbsp; 24 sites</span>
   </header>
 
   <main>
     <div class="hero">
-      <h1>find something<br/><em>unexpected</em></h1>
-      <p>A hand-picked collection of the internet's most interesting corners. Open one. Get lost.</p>
+      <h1>The Internet's Best Kept<br/><em>Secrets,</em> One Click Away.</h1>
+      <p>No algorithm. No ads. Just hand-picked weird, wonderful, and wildly interesting corners of the web.</p>
     </div>
 
-    <div style="display:flex;flex-direction:column;align-items:center;gap:14px;">
+    <div class="cta-row">
       <button class="drift-btn" onclick="driftRandom()">
         Take me somewhere <span class="arrow">→</span>
       </button>
-      <span style="font-size:12px;color:var(--muted);font-weight:300;">or browse by vibe below</span>
+      <span class="count-pill"><strong>24</strong> hand-picked sites · hover a card to peek</span>
     </div>
 
-    <div class="filter-row" id="filters">
+    <div class="filter-row">
       <button class="filter-btn active" data-tag="all" onclick="filter(this,'all')">everything</button>
       <button class="filter-btn" data-tag="weird" onclick="filter(this,'weird')">weird</button>
       <button class="filter-btn" data-tag="creative" onclick="filter(this,'creative')">creative</button>
@@ -409,194 +198,292 @@
       <button class="filter-btn" data-tag="interactive" onclick="filter(this,'interactive')">interactive</button>
     </div>
 
-    <div class="divider"></div>
-
-    <div class="grid-label"><span>all drifts</span></div>
+    <div style="width:100%;height:1px;background:var(--border);"></div>
+    <div class="grid-label"><span id="grid-label-text">all sites</span></div>
 
     <div class="cards-grid" id="grid">
 
-      <a class="card" href="https://neal.fun" target="_blank" rel="noopener" data-tags="weird creative interactive game learn">
-        <div class="card-top"><span class="card-name">Neal.fun</span><span class="card-arrow">↗</span></div>
-        <p class="card-desc">One developer. Dozens of tiny polished internet toys. Spend Bill Gates' money, launch an asteroid, draw a perfect circle. You will lose hours here.</p>
-        <div class="card-tags"><span class="tag">weird</span><span class="tag">creative</span><span class="tag">interactive</span></div>
-      </a>
+      <div class="card" data-tags="weird creative interactive game learn" data-url="https://neal.fun" data-name="Neal.fun" onclick="openSite(this)">
+        <div class="card-peek"><span class="card-name">Neal.fun</span><span class="card-icon-btn">↗</span></div>
+        <div class="card-reveal">
+          <p class="card-desc">One developer. Dozens of tiny polished internet toys. Spend Bill Gates' money, launch an asteroid, draw a perfect circle. You will lose hours here.</p>
+          <div class="card-tags"><span class="tag">weird</span><span class="tag">creative</span><span class="tag">interactive</span></div>
+        </div>
+      </div>
 
-      <a class="card" href="https://theuselessweb.com" target="_blank" rel="noopener" data-tags="weird">
-        <div class="card-top"><span class="card-name">The Useless Web</span><span class="card-arrow">↗</span></div>
-        <p class="card-desc">Press one button. Get teleported to a completely pointless website. That's the whole thing. It's perfect.</p>
-        <div class="card-tags"><span class="tag">weird</span></div>
-      </a>
+      <div class="card" data-tags="weird" data-url="https://theuselessweb.com" data-name="The Useless Web" onclick="openSite(this)">
+        <div class="card-peek"><span class="card-name">The Useless Web</span><span class="card-icon-btn">↗</span></div>
+        <div class="card-reveal">
+          <p class="card-desc">Press one button. Get teleported to a completely pointless website. That's the whole thing. It's perfect.</p>
+          <div class="card-tags"><span class="tag">weird</span></div>
+        </div>
+      </div>
 
-      <a class="card" href="https://patatap.com" target="_blank" rel="noopener" data-tags="creative interactive chill">
-        <div class="card-top"><span class="card-name">Patatap</span><span class="card-arrow">↗</span></div>
-        <p class="card-desc">Every key on your keyboard triggers a different sound and animation. Type nonsense, make music. Oddly therapeutic.</p>
-        <div class="card-tags"><span class="tag">creative</span><span class="tag">interactive</span><span class="tag">chill</span></div>
-      </a>
+      <div class="card" data-tags="creative interactive chill" data-url="https://patatap.com" data-name="Patatap" onclick="openSite(this)">
+        <div class="card-peek"><span class="card-name">Patatap</span><span class="card-icon-btn">↗</span></div>
+        <div class="card-reveal">
+          <p class="card-desc">Every key on your keyboard triggers a different sound and animation. Type nonsense, make music. Oddly therapeutic.</p>
+          <div class="card-tags"><span class="tag">creative</span><span class="tag">interactive</span><span class="tag">chill</span></div>
+        </div>
+      </div>
 
-      <a class="card" href="https://pointerpointer.com" target="_blank" rel="noopener" data-tags="weird interactive">
-        <div class="card-top"><span class="card-name">Pointer Pointer</span><span class="card-arrow">↗</span></div>
-        <p class="card-desc">Move your cursor anywhere on the screen. The site finds a photograph of a real human pointing exactly at your cursor. Every single time.</p>
-        <div class="card-tags"><span class="tag">weird</span><span class="tag">interactive</span></div>
-      </a>
+      <div class="card" data-tags="weird interactive" data-url="https://pointerpointer.com" data-name="Pointer Pointer" onclick="openSite(this)">
+        <div class="card-peek"><span class="card-name">Pointer Pointer</span><span class="card-icon-btn">↗</span></div>
+        <div class="card-reveal">
+          <p class="card-desc">Move your cursor anywhere. The site finds a real photograph of a human pointing exactly at your cursor. Every single time.</p>
+          <div class="card-tags"><span class="tag">weird</span><span class="tag">interactive</span></div>
+        </div>
+      </div>
 
-      <a class="card" href="https://radio.garden" target="_blank" rel="noopener" data-tags="chill learn interactive">
-        <div class="card-top"><span class="card-name">Radio Garden</span><span class="card-arrow">↗</span></div>
-        <p class="card-desc">Spin a 3D globe and tune into live radio stations from anywhere on Earth. One click puts you in a city you've never been to.</p>
-        <div class="card-tags"><span class="tag">chill</span><span class="tag">interactive</span><span class="tag">learn</span></div>
-      </a>
+      <div class="card" data-tags="chill learn interactive" data-url="https://radio.garden" data-name="Radio Garden" onclick="openSite(this)">
+        <div class="card-peek"><span class="card-name">Radio Garden</span><span class="card-icon-btn">↗</span></div>
+        <div class="card-reveal">
+          <p class="card-desc">Spin a 3D globe and tune into live radio from anywhere on Earth. One click puts you in a city you've never visited.</p>
+          <div class="card-tags"><span class="tag">chill</span><span class="tag">interactive</span><span class="tag">learn</span></div>
+        </div>
+      </div>
 
-      <a class="card" href="https://geoguessr.com" target="_blank" rel="noopener" data-tags="game learn interactive">
-        <div class="card-top"><span class="card-name">GeoGuessr</span><span class="card-arrow">↗</span></div>
-        <p class="card-desc">You're dropped into a random Google Street View somewhere on Earth. Guess where you are. Deceptively addictive geography game.</p>
-        <div class="card-tags"><span class="tag">game</span><span class="tag">learn</span></div>
-      </a>
+      <div class="card" data-tags="game learn interactive" data-url="https://geoguessr.com" data-name="GeoGuessr" onclick="openSite(this)">
+        <div class="card-peek"><span class="card-name">GeoGuessr</span><span class="card-icon-btn">↗</span></div>
+        <div class="card-reveal">
+          <p class="card-desc">Dropped into a random Google Street View somewhere on Earth. Guess where you are. Deceptively addictive geography game.</p>
+          <div class="card-tags"><span class="tag">game</span><span class="tag">learn</span></div>
+        </div>
+      </div>
 
-      <a class="card" href="https://mapcrunch.com" target="_blank" rel="noopener" data-tags="chill learn interactive">
-        <div class="card-top"><span class="card-name">MapCrunch</span><span class="card-arrow">↗</span></div>
-        <p class="card-desc">Random Street View locations from around the world, instantly. No game, no score — just silent tourism from your desk.</p>
-        <div class="card-tags"><span class="tag">chill</span><span class="tag">interactive</span></div>
-      </a>
+      <div class="card" data-tags="chill learn interactive" data-url="https://mapcrunch.com" data-name="MapCrunch" onclick="openSite(this)">
+        <div class="card-peek"><span class="card-name">MapCrunch</span><span class="card-icon-btn">↗</span></div>
+        <div class="card-reveal">
+          <p class="card-desc">Random Street View locations from around the world, instantly. No game, no score — just silent tourism from your desk.</p>
+          <div class="card-tags"><span class="tag">chill</span><span class="tag">interactive</span></div>
+        </div>
+      </div>
 
-      <a class="card" href="https://quickdraw.withgoogle.com" target="_blank" rel="noopener" data-tags="game interactive creative">
-        <div class="card-top"><span class="card-name">Quick, Draw!</span><span class="card-arrow">↗</span></div>
-        <p class="card-desc">Draw something in 20 seconds. Google's neural network guesses what it is in real time. A party game disguised as an AI experiment.</p>
-        <div class="card-tags"><span class="tag">game</span><span class="tag">interactive</span><span class="tag">creative</span></div>
-      </a>
+      <div class="card" data-tags="game interactive creative" data-url="https://quickdraw.withgoogle.com" data-name="Quick, Draw!" onclick="openSite(this)">
+        <div class="card-peek"><span class="card-name">Quick, Draw!</span><span class="card-icon-btn">↗</span></div>
+        <div class="card-reveal">
+          <p class="card-desc">Draw something in 20 seconds. Google's neural network guesses what it is in real time. A party game disguised as an AI experiment.</p>
+          <div class="card-tags"><span class="tag">game</span><span class="tag">interactive</span><span class="tag">creative</span></div>
+        </div>
+      </div>
 
-      <a class="card" href="https://zoomquilt.org" target="_blank" rel="noopener" data-tags="weird creative chill">
-        <div class="card-top"><span class="card-name">Zoomquilt</span><span class="card-arrow">↗</span></div>
-        <p class="card-desc">An infinite, endlessly zooming collaborative painting that tunnels deeper and deeper forever. Genuinely hypnotic.</p>
-        <div class="card-tags"><span class="tag">weird</span><span class="tag">creative</span><span class="tag">chill</span></div>
-      </a>
+      <div class="card" data-tags="weird creative chill" data-url="https://zoomquilt.org" data-name="Zoomquilt" onclick="openSite(this)">
+        <div class="card-peek"><span class="card-name">Zoomquilt</span><span class="card-icon-btn">↗</span></div>
+        <div class="card-reveal">
+          <p class="card-desc">An infinite, endlessly zooming collaborative painting that tunnels deeper forever. Genuinely hypnotic.</p>
+          <div class="card-tags"><span class="tag">weird</span><span class="tag">creative</span><span class="tag">chill</span></div>
+        </div>
+      </div>
 
-      <a class="card" href="https://littlealchemy2.com" target="_blank" rel="noopener" data-tags="game learn creative">
-        <div class="card-top"><span class="card-name">Little Alchemy 2</span><span class="card-arrow">↗</span></div>
-        <p class="card-desc">Start with earth, fire, water, and air. Combine them to discover 700+ items. Somehow combines the feeling of science class and toy box.</p>
-        <div class="card-tags"><span class="tag">game</span><span class="tag">learn</span><span class="tag">creative</span></div>
-      </a>
+      <div class="card" data-tags="game learn creative" data-url="https://littlealchemy2.com" data-name="Little Alchemy 2" onclick="openSite(this)">
+        <div class="card-peek"><span class="card-name">Little Alchemy 2</span><span class="card-icon-btn">↗</span></div>
+        <div class="card-reveal">
+          <p class="card-desc">Start with earth, fire, water, and air. Combine them to discover 700+ elements. Science class meets toy box.</p>
+          <div class="card-tags"><span class="tag">game</span><span class="tag">learn</span><span class="tag">creative</span></div>
+        </div>
+      </div>
 
-      <a class="card" href="https://wikiroulette.co" target="_blank" rel="noopener" data-tags="learn weird">
-        <div class="card-top"><span class="card-name">Wiki Roulette</span><span class="card-arrow">↗</span></div>
-        <p class="card-desc">Spin into a completely random Wikipedia article. The world's strangest knowledge rabbit hole, with one click.</p>
-        <div class="card-tags"><span class="tag">learn</span><span class="tag">weird</span></div>
-      </a>
+      <div class="card" data-tags="learn weird" data-url="https://wikiroulette.co" data-name="Wiki Roulette" onclick="openSite(this)">
+        <div class="card-peek"><span class="card-name">Wiki Roulette</span><span class="card-icon-btn">↗</span></div>
+        <div class="card-reveal">
+          <p class="card-desc">Spin into a completely random Wikipedia article. The world's strangest knowledge rabbit hole, one click.</p>
+          <div class="card-tags"><span class="tag">learn</span><span class="tag">weird</span></div>
+        </div>
+      </div>
 
-      <a class="card" href="https://cat-bounce.com" target="_blank" rel="noopener" data-tags="weird chill">
-        <div class="card-top"><span class="card-name">Cat Bounce</span><span class="card-arrow">↗</span></div>
-        <p class="card-desc">Animated cats. Bouncing. Click "make it rain" for maximum chaos. Has no other purpose. Exists because it should.</p>
-        <div class="card-tags"><span class="tag">weird</span><span class="tag">chill</span></div>
-      </a>
+      <div class="card" data-tags="weird chill" data-url="https://cat-bounce.com" data-name="Cat Bounce" onclick="openSite(this)">
+        <div class="card-peek"><span class="card-name">Cat Bounce</span><span class="card-icon-btn">↗</span></div>
+        <div class="card-reveal">
+          <p class="card-desc">Animated cats. Bouncing. Click "make it rain" for maximum chaos. Has no other purpose. Exists because it should.</p>
+          <div class="card-tags"><span class="tag">weird</span><span class="tag">chill</span></div>
+        </div>
+      </div>
 
-      <a class="card" href="https://stumbled.cc" target="_blank" rel="noopener" data-tags="weird learn creative">
-        <div class="card-top"><span class="card-name">Stumbled.cc</span><span class="card-arrow">↗</span></div>
-        <p class="card-desc">The spiritual successor to StumbleUpon. Curated, no clickbait. One button takes you to a random interesting corner of the internet.</p>
-        <div class="card-tags"><span class="tag">weird</span><span class="tag">learn</span></div>
-      </a>
+      <div class="card" data-tags="weird learn creative" data-url="https://stumbled.cc" data-name="Stumbled.cc" onclick="openSite(this)">
+        <div class="card-peek"><span class="card-name">Stumbled.cc</span><span class="card-icon-btn">↗</span></div>
+        <div class="card-reveal">
+          <p class="card-desc">The spiritual successor to StumbleUpon. Curated, no clickbait. One button takes you to a random interesting corner of the internet.</p>
+          <div class="card-tags"><span class="tag">weird</span><span class="tag">learn</span></div>
+        </div>
+      </div>
 
-      <a class="card" href="https://thesecretdoor.com" target="_blank" rel="noopener" data-tags="weird chill interactive">
-        <div class="card-top"><span class="card-name">The Secret Door</span><span class="card-arrow">↗</span></div>
-        <p class="card-desc">Click a door. Get teleported to a random location anywhere in the world via Street View. No context given. Just go.</p>
-        <div class="card-tags"><span class="tag">weird</span><span class="tag">chill</span><span class="tag">interactive</span></div>
-      </a>
+      <div class="card" data-tags="weird chill interactive" data-url="https://thesecretdoor.com" data-name="The Secret Door" onclick="openSite(this)">
+        <div class="card-peek"><span class="card-name">The Secret Door</span><span class="card-icon-btn">↗</span></div>
+        <div class="card-reveal">
+          <p class="card-desc">Click a door. Get teleported to a random location anywhere in the world via Street View. No context. Just go.</p>
+          <div class="card-tags"><span class="tag">weird</span><span class="tag">chill</span><span class="tag">interactive</span></div>
+        </div>
+      </div>
 
-      <a class="card" href="https://boredbutton.com" target="_blank" rel="noopener" data-tags="weird game interactive">
-        <div class="card-top"><span class="card-name">Bored Button</span><span class="card-arrow">↗</span></div>
-        <p class="card-desc">One big red button. Hundreds of hand-picked interactive games and experiences. Instant boredom cure, no browsing required.</p>
-        <div class="card-tags"><span class="tag">weird</span><span class="tag">game</span><span class="tag">interactive</span></div>
-      </a>
+      <div class="card" data-tags="weird game interactive" data-url="https://boredbutton.com" data-name="Bored Button" onclick="openSite(this)">
+        <div class="card-peek"><span class="card-name">Bored Button</span><span class="card-icon-btn">↗</span></div>
+        <div class="card-reveal">
+          <p class="card-desc">One big red button. Hundreds of hand-picked interactive games and experiences. Instant boredom cure, no browsing required.</p>
+          <div class="card-tags"><span class="tag">weird</span><span class="tag">game</span><span class="tag">interactive</span></div>
+        </div>
+      </div>
 
-      <a class="card" href="https://thisissand.com" target="_blank" rel="noopener" data-tags="chill creative interactive">
-        <div class="card-top"><span class="card-name">This is Sand</span><span class="card-arrow">↗</span></div>
-        <p class="card-desc">Pour coloured sand from the top of your screen. Watch it pile up in layers. No instructions needed. Somehow both boring and riveting.</p>
-        <div class="card-tags"><span class="tag">chill</span><span class="tag">creative</span><span class="tag">interactive</span></div>
-      </a>
+      <div class="card" data-tags="chill creative interactive" data-url="https://thisissand.com" data-name="This is Sand" onclick="openSite(this)">
+        <div class="card-peek"><span class="card-name">This is Sand</span><span class="card-icon-btn">↗</span></div>
+        <div class="card-reveal">
+          <p class="card-desc">Pour coloured sand from the top of your screen. Watch it pile up in layers. Somehow both boring and riveting.</p>
+          <div class="card-tags"><span class="tag">chill</span><span class="tag">creative</span><span class="tag">interactive</span></div>
+        </div>
+      </div>
 
-      <a class="card" href="https://web.archive.org" target="_blank" rel="noopener" data-tags="learn weird">
-        <div class="card-top"><span class="card-name">Wayback Machine</span><span class="card-arrow">↗</span></div>
-        <p class="card-desc">Time travel for websites. See what Google looked like in 1998, what your university site was in 2005. Digital archaeology.</p>
-        <div class="card-tags"><span class="tag">learn</span><span class="tag">weird</span></div>
-      </a>
+      <div class="card" data-tags="learn weird" data-url="https://web.archive.org" data-name="Wayback Machine" onclick="openSite(this)">
+        <div class="card-peek"><span class="card-name">Wayback Machine</span><span class="card-icon-btn">↗</span></div>
+        <div class="card-reveal">
+          <p class="card-desc">Time travel for websites. See what Google looked like in 1998, what your university site was in 2005. Digital archaeology.</p>
+          <div class="card-tags"><span class="tag">learn</span><span class="tag">weird</span></div>
+        </div>
+      </div>
 
-      <a class="card" href="https://ocearch.org/tracker" target="_blank" rel="noopener" data-tags="learn chill interactive">
-        <div class="card-top"><span class="card-name">OCEARCH Shark Tracker</span><span class="card-arrow">↗</span></div>
-        <p class="card-desc">Track real tagged sharks as they swim around the actual ocean right now. You can follow individual sharks by name. Mary Lee has 13M followers.</p>
-        <div class="card-tags"><span class="tag">learn</span><span class="tag">chill</span><span class="tag">interactive</span></div>
-      </a>
+      <div class="card" data-tags="learn chill interactive" data-url="https://ocearch.org/tracker" data-name="OCEARCH Shark Tracker" onclick="openSite(this)">
+        <div class="card-peek"><span class="card-name">Shark Tracker</span><span class="card-icon-btn">↗</span></div>
+        <div class="card-reveal">
+          <p class="card-desc">Track real tagged sharks swimming around the ocean right now. Follow individual sharks by name. Mary Lee has 13M fans.</p>
+          <div class="card-tags"><span class="tag">learn</span><span class="tag">chill</span><span class="tag">interactive</span></div>
+        </div>
+      </div>
 
-      <a class="card" href="https://staggeringbeauty.com" target="_blank" rel="noopener" data-tags="weird interactive">
-        <div class="card-top"><span class="card-name">Staggering Beauty</span><span class="card-arrow">↗</span></div>
-        <p class="card-desc">Gently wiggle a worm with your mouse. Then wiggle fast. Something happens. ⚠ Contains flashing lights.</p>
-        <div class="card-tags"><span class="tag">weird</span><span class="tag">interactive</span></div>
-      </a>
+      <div class="card" data-tags="weird interactive" data-url="https://staggeringbeauty.com" data-name="Staggering Beauty" onclick="openSite(this)">
+        <div class="card-peek"><span class="card-name">Staggering Beauty</span><span class="card-icon-btn">↗</span></div>
+        <div class="card-reveal">
+          <p class="card-desc">Gently wiggle a worm with your mouse. Then wiggle fast. Something happens. ⚠ Contains flashing lights.</p>
+          <div class="card-tags"><span class="tag">weird</span><span class="tag">interactive</span></div>
+        </div>
+      </div>
 
-      <a class="card" href="https://musclewiki.com" target="_blank" rel="noopener" data-tags="learn interactive">
-        <div class="card-top"><span class="card-name">MuscleWiki</span><span class="card-arrow">↗</span></div>
-        <p class="card-desc">Click any muscle on a 3D body diagram. Get every exercise that targets it, with videos. The most useful website almost nobody knows about.</p>
-        <div class="card-tags"><span class="tag">learn</span><span class="tag">interactive</span></div>
-      </a>
+      <div class="card" data-tags="learn interactive" data-url="https://musclewiki.com" data-name="MuscleWiki" onclick="openSite(this)">
+        <div class="card-peek"><span class="card-name">MuscleWiki</span><span class="card-icon-btn">↗</span></div>
+        <div class="card-reveal">
+          <p class="card-desc">Click any muscle on a 3D body diagram. Get every exercise that targets it, with videos. Most useful site almost nobody knows.</p>
+          <div class="card-tags"><span class="tag">learn</span><span class="tag">interactive</span></div>
+        </div>
+      </div>
 
-      <a class="card" href="https://passportindex.org" target="_blank" rel="noopener" data-tags="learn interactive">
-        <div class="card-top"><span class="card-name">Passport Index</span><span class="card-arrow">↗</span></div>
-        <p class="card-desc">See which passports can travel where, visa-free. Compare your passport strength against every country in the world. Quietly fascinating.</p>
-        <div class="card-tags"><span class="tag">learn</span><span class="tag">interactive</span></div>
-      </a>
+      <div class="card" data-tags="learn interactive" data-url="https://passportindex.org" data-name="Passport Index" onclick="openSite(this)">
+        <div class="card-peek"><span class="card-name">Passport Index</span><span class="card-icon-btn">↗</span></div>
+        <div class="card-reveal">
+          <p class="card-desc">See which passports travel where, visa-free. Compare your passport against every country in the world. Quietly fascinating.</p>
+          <div class="card-tags"><span class="tag">learn</span><span class="tag">interactive</span></div>
+        </div>
+      </div>
 
-      <a class="card" href="https://murdle.com" target="_blank" rel="noopener" data-tags="game learn">
-        <div class="card-top"><span class="card-name">Murdle</span><span class="card-arrow">↗</span></div>
-        <p class="card-desc">A daily mini murder mystery. Solve it using logic grids and clues. Like Wordle, but you're figuring out who committed a crime.</p>
-        <div class="card-tags"><span class="tag">game</span><span class="tag">learn</span></div>
-      </a>
+      <div class="card" data-tags="game learn" data-url="https://murdle.com" data-name="Murdle" onclick="openSite(this)">
+        <div class="card-peek"><span class="card-name">Murdle</span><span class="card-icon-btn">↗</span></div>
+        <div class="card-reveal">
+          <p class="card-desc">A daily mini murder mystery. Solve it with logic grids and clues. Like Wordle, but you're figuring out who committed a crime.</p>
+          <div class="card-tags"><span class="tag">game</span><span class="tag">learn</span></div>
+        </div>
+      </div>
+
+      <div class="card" data-tags="game interactive" data-url="https://slither.io" data-name="Slither.io" onclick="openSite(this)">
+        <div class="card-peek"><span class="card-name">Slither.io</span><span class="card-icon-btn">↗</span></div>
+        <div class="card-reveal">
+          <p class="card-desc">You are a snake. Eat glowing dots. Don't hit anyone. Grow enormous and dominate the server. One game, zero friction, endlessly replayable.</p>
+          <div class="card-tags"><span class="tag">game</span><span class="tag">interactive</span></div>
+        </div>
+      </div>
+
+      <div class="card" data-tags="game creative interactive" data-url="https://skribbl.io" data-name="Skribbl.io" onclick="openSite(this)">
+        <div class="card-peek"><span class="card-name">Skribbl.io</span><span class="card-icon-btn">↗</span></div>
+        <div class="card-reveal">
+          <p class="card-desc">One player draws, everyone else guesses. Online Pictionary with strangers — chaotic, funny, and somehow better than the board game version.</p>
+          <div class="card-tags"><span class="tag">game</span><span class="tag">creative</span><span class="tag">interactive</span></div>
+        </div>
+      </div>
 
     </div>
-
   </main>
 
   <footer>
-    <span class="footer-text">
-      Driftly — built with curiosity. Add your own finds via
-      <a href="https://github.com" target="_blank">GitHub</a>.
-    </span>
-    <span class="count-badge">
-      <strong id="visible-count">22</strong> drifts available
-    </span>
+    <span class="footer-text">Curious Crow — hand-picked by humans, for humans.</span>
+    <span class="footer-text"><strong id="visible-count" style="color:var(--accent)">24</strong> sites available</span>
   </footer>
 
 </div>
 
+
+
+<style>
+  .toast {
+    position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(80px);
+    background: var(--surface2); border: 1px solid var(--border);
+    color: var(--text); font-size: 13px; font-weight: 400;
+    padding: 12px 20px; border-radius: 100px;
+    display: flex; align-items: center; gap: 10px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    z-index: 9000; transition: transform 0.3s ease, opacity 0.3s ease;
+    opacity: 0; white-space: nowrap;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+  .toast .toast-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+  .toast .toast-next { background: var(--accent); color: #0a0a0a; border: none; border-radius: 100px; padding: 5px 14px; font-size: 12px; font-weight: 500; cursor: pointer; font-family: var(--font-body); margin-left: 4px; }
+</style>
+
 <script>
-  const allCards = () => document.querySelectorAll('.card');
+  let currentFilter = 'all';
+  let toastTimer = null;
+
+  function showToast(name) {
+    let toast = document.getElementById('crow-toast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'crow-toast';
+      toast.className = 'toast';
+      toast.innerHTML = `<span class="toast-dot"></span><span id="toast-msg"></span><button class="toast-next" onclick="driftNext()">Next →</button>`;
+      document.body.appendChild(toast);
+    }
+    document.getElementById('toast-msg').textContent = `Opened ${name} — come back for more`;
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 5000);
+  }
+
+  function allCards() { return [...document.querySelectorAll('.card')]; }
+  function visibleCards() { return allCards().filter(c => !c.classList.contains('hidden')); }
+
+  function openSite(card) {
+    const url = card.dataset.url;
+    const name = card.dataset.name;
+    window.open(url, '_blank', 'noopener');
+    showToast(name);
+  }
+
+  function driftNext() {
+    const visible = visibleCards();
+    if (!visible.length) return;
+    const pick = visible[Math.floor(Math.random() * visible.length)];
+    openSite(pick);
+  }
+
+  function driftRandom() {
+    const visible = visibleCards();
+    if (!visible.length) return;
+    const pick = visible[Math.floor(Math.random() * visible.length)];
+    pick.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    pick.classList.add('lucky');
+    setTimeout(() => { pick.classList.remove('lucky'); openSite(pick); }, 1200);
+  }
 
   function filter(btn, tag) {
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-
+    currentFilter = tag;
     let count = 0;
     allCards().forEach(card => {
-      const tags = card.dataset.tags || '';
-      const show = tag === 'all' || tags.includes(tag);
+      const show = tag === 'all' || (card.dataset.tags || '').includes(tag);
       card.classList.toggle('hidden', !show);
       if (show) count++;
     });
-
     document.getElementById('visible-count').textContent = count;
-
-    const label = document.querySelector('.grid-label span');
-    label.textContent = tag === 'all' ? 'all drifts' : tag;
+    document.getElementById('grid-label-text').textContent = tag === 'all' ? 'all sites' : tag;
   }
 
-  function driftRandom() {
-    const visible = [...allCards()].filter(c => !c.classList.contains('hidden'));
-    if (!visible.length) return;
-    const pick = visible[Math.floor(Math.random() * visible.length)];
-
-    // scroll to it, flash it, then open
-    pick.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    pick.classList.add('lucky');
-    setTimeout(() => {
-      pick.classList.remove('lucky');
-      window.open(pick.href, '_blank', 'noopener');
-    }, 1600);
-  }
+  // close toast on Escape
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') { const t = document.getElementById('crow-toast'); if(t) t.classList.remove('show'); } });
 </script>
 </body>
 </html>
