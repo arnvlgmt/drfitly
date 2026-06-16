@@ -172,7 +172,7 @@ footer { padding: 22px 0 30px; display: flex; align-items: center; justify-conte
 
   <header>
     <a class="wordmark" href="#"><span class="crow">🐦‍⬛</span> Curious Crow</a>
-    <span class="badge-verified">Verified by humans &nbsp;·&nbsp; 24 sites</span>
+    <span class="badge-verified">Verified by humans &nbsp;·&nbsp; 29 sites</span>
   </header>
 
   <main>
@@ -185,7 +185,7 @@ footer { padding: 22px 0 30px; display: flex; align-items: center; justify-conte
       <button class="drift-btn" onclick="driftRandom()">
         Take me somewhere <span class="arrow">→</span>
       </button>
-      <span class="count-pill"><strong>24</strong> hand-picked sites · hover a card to peek</span>
+      <span class="count-pill"><strong>57</strong> hand-picked sites · hover a card to peek</span>
     </div>
 
     <div class="filter-row">
@@ -196,6 +196,8 @@ footer { padding: 22px 0 30px; display: flex; align-items: center; justify-conte
       <button class="filter-btn" data-tag="learn" onclick="filter(this,'learn')">learn something</button>
       <button class="filter-btn" data-tag="chill" onclick="filter(this,'chill')">chill</button>
       <button class="filter-btn" data-tag="interactive" onclick="filter(this,'interactive')">interactive</button>
+      <button class="filter-btn" data-tag="impress" onclick="filter(this,'impress')">✦ impress your date</button>
+      <button class="filter-btn" data-tag="date" onclick="filter(this,'date')">💌 love & date</button>
     </div>
 
     <div style="width:100%;height:1px;background:var(--border);"></div>
@@ -387,11 +389,287 @@ footer { padding: 22px 0 30px; display: flex; align-items: center; justify-conte
         </div>
       </div>
 
-      <div class="card" data-tags="game creative interactive" data-url="https://skribbl.io" data-name="Skribbl.io" onclick="openSite(this)">
+      <div class="card" data-tags="game creative interactive impress" data-url="https://skribbl.io" data-name="Skribbl.io" onclick="openSite(this)">
         <div class="card-peek"><span class="card-name">Skribbl.io</span><span class="card-icon-btn">↗</span></div>
         <div class="card-reveal">
           <p class="card-desc">One player draws, everyone else guesses. Online Pictionary with strangers — chaotic, funny, and somehow better than the board game version.</p>
           <div class="card-tags"><span class="tag">game</span><span class="tag">creative</span><span class="tag">interactive</span></div>
+        </div>
+      </div>
+
+      <div class="card" data-tags="chill interactive impress" data-url="https://stellarium-web.org" data-name="Stellarium" onclick="openSite(this)">
+        <div class="card-peek"><span class="card-name">Stellarium</span><span class="card-icon-btn">↗</span></div>
+        <div class="card-reveal">
+          <p class="card-desc">A real-time 3D planetarium in your browser. Shows the exact stars, planets and constellations above you right now, tonight. Pull this out on a date and you're done.</p>
+          <div class="card-tags"><span class="tag">chill</span><span class="tag">interactive</span><span class="tag">✦ impress</span></div>
+        </div>
+      </div>
+
+      <div class="card" data-tags="creative interactive impress" data-url="https://stars.chromeexperiments.com" data-name="100,000 Stars" onclick="openSite(this)">
+        <div class="card-peek"><span class="card-name">100,000 Stars</span><span class="card-icon-btn">↗</span></div>
+        <div class="card-reveal">
+          <p class="card-desc">An interactive 3D visualisation of 100,000 stars near our solar system. Scroll out far enough and the Milky Way appears. One of the most beautiful things on the internet.</p>
+          <div class="card-tags"><span class="tag">creative</span><span class="tag">interactive</span><span class="tag">✦ impress</span></div>
+        </div>
+      </div>
+
+      <div class="card" data-tags="weird interactive impress" data-url="https://windows93.net" data-name="Windows 93" onclick="openSite(this)">
+        <div class="card-peek"><span class="card-name">Windows 93</span><span class="card-icon-btn">↗</span></div>
+        <div class="card-reveal">
+          <p class="card-desc">A fully functional fake operating system from a fake 1993. Has apps, games, a file system, and secrets buried everywhere. Great to explore together — nobody expects this to be as deep as it is.</p>
+          <div class="card-tags"><span class="tag">weird</span><span class="tag">interactive</span><span class="tag">✦ impress</span></div>
+        </div>
+      </div>
+
+      <div class="card" data-tags="interactive impress chill" data-url="https://www.whatismyipaddress.com/google-earth" data-name="Google Earth Timelapse" onclick="openSite(this)">
+        <div class="card-peek"><span class="card-name">Earth Timelapse</span><span class="card-icon-btn">↗</span></div>
+        <div class="card-reveal">
+          <p class="card-desc">Watch 37 years of Earth's surface change in seconds — cities growing, glaciers shrinking, forests disappearing. Google's most quietly stunning project.</p>
+          <div class="card-tags"><span class="tag">interactive</span><span class="tag">chill</span><span class="tag">✦ impress</span></div>
+        </div>
+      </div>
+
+      <div class="card" data-tags="interactive impress learn" data-url="https://neal.fun/deep-sea" data-name="The Deep Sea" onclick="openSite(this)">
+        <div class="card-peek"><span class="card-name">The Deep Sea</span><span class="card-icon-btn">↗</span></div>
+        <div class="card-reveal">
+          <p class="card-desc">Scroll down through the entire ocean. Every creature that lives at each depth appears as you go deeper. At the bottom: things that look like they shouldn't exist.</p>
+          <div class="card-tags"><span class="tag">interactive</span><span class="tag">learn</span><span class="tag">✦ impress</span></div>
+        </div>
+      </div>
+
+
+      <!-- ── OWN PAGES ── -->
+      <div class="card" data-tags="game weird interactive" data-url="how-cooked.html" data-name="How Cooked Are You" onclick="openSite(this)">
+        <div class="card-peek"><span class="card-name">How Cooked Are You?</span><span class="card-icon-btn">↗</span></div>
+        <div class="card-reveal">
+          <p class="card-desc">Pick a scenario — zombie apocalypse, stuck with your ex, salary stops, famous overnight. Answer 7 questions. Find out exactly how badly you'd survive it.</p>
+          <div class="card-tags"><span class="tag">game</span><span class="tag">weird</span><span class="tag">interactive</span></div>
+        </div>
+      </div>
+
+      <div class="card" data-tags="date chill creative" data-url="make-a-wish.html" data-name="Make a Wish" onclick="openSite(this)">
+        <div class="card-peek"><span class="card-name">Make a Wish</span><span class="card-icon-btn">↗</span></div>
+        <div class="card-reveal">
+          <p class="card-desc">Write your wish, release a lantern into the night sky, and let the universe meet you halfway. An ancient belief, beautifully illustrated.</p>
+          <div class="card-tags"><span class="tag">date</span><span class="tag">chill</span><span class="tag">creative</span></div>
+        </div>
+      </div>
+
+      <div class="card" data-tags="date chill creative" data-url="last-letter.html" data-name="The Last Letter" onclick="openSite(this)">
+        <div class="card-peek"><span class="card-name">The Last Letter</span><span class="card-icon-btn">↗</span></div>
+        <div class="card-reveal">
+          <p class="card-desc">Write a letter to someone you can't talk to anymore. Then burn it, fold it, or send it to the universe. The burning animation is real.</p>
+          <div class="card-tags"><span class="tag">date</span><span class="tag">chill</span><span class="tag">creative</span></div>
+        </div>
+      </div>
+
+      <!-- ── INTERACTIVE / MIND-BENDING ── -->
+      <div class="card" data-tags="weird interactive impress" data-url="https://windows93.net" data-name="Windows 93" onclick="openSite(this)">
+        <div class="card-peek"><span class="card-name">Windows 93</span><span class="card-icon-btn">↗</span></div>
+        <div class="card-reveal">
+          <p class="card-desc">A fake operating system from 1993 that runs in your browser — with real apps, secrets, and an entire world to explore. Pull this out on a date.</p>
+          <div class="card-tags"><span class="tag">weird</span><span class="tag">interactive</span><span class="tag">✦ impress</span></div>
+        </div>
+      </div>
+
+      <div class="card" data-tags="learn interactive impress" data-url="https://histography.io" data-name="Histography" onclick="openSite(this)">
+        <div class="card-peek"><span class="card-name">Histography</span><span class="card-icon-btn">↗</span></div>
+        <div class="card-reveal">
+          <p class="card-desc">An interactive timeline of all human history — from the Big Bang to today. Every dot is a Wikipedia event. Scroll through 14 billion years.</p>
+          <div class="card-tags"><span class="tag">learn</span><span class="tag">interactive</span><span class="tag">✦ impress</span></div>
+        </div>
+      </div>
+
+      <div class="card" data-tags="learn interactive impress chill" data-url="https://stars.chromeexperiments.com" data-name="100,000 Stars" onclick="openSite(this)">
+        <div class="card-peek"><span class="card-name">100,000 Stars</span><span class="card-icon-btn">↗</span></div>
+        <div class="card-reveal">
+          <p class="card-desc">An interactive 3D visualisation of the stellar neighbourhood. Zoom in and our solar system appears. Every star is real and in its actual position.</p>
+          <div class="card-tags"><span class="tag">learn</span><span class="tag">interactive</span><span class="tag">✦ impress</span></div>
+        </div>
+      </div>
+
+      <div class="card" data-tags="learn interactive impress chill" data-url="https://earthengine.google.com/timelapse/" data-name="Earth Timelapse" onclick="openSite(this)">
+        <div class="card-peek"><span class="card-name">Earth Timelapse</span><span class="card-icon-btn">↗</span></div>
+        <div class="card-reveal">
+          <p class="card-desc">37 years of the planet changing — glaciers vanishing, cities expanding, forests disappearing — compressed into seconds. Google Earth's most haunting feature.</p>
+          <div class="card-tags"><span class="tag">learn</span><span class="tag">interactive</span><span class="tag">✦ impress</span></div>
+        </div>
+      </div>
+
+      <div class="card" data-tags="creative interactive impress" data-url="https://bruno-simon.com" data-name="Bruno Simon" onclick="openSite(this)">
+        <div class="card-peek"><span class="card-name">Bruno Simon</span><span class="card-icon-btn">↗</span></div>
+        <div class="card-reveal">
+          <p class="card-desc">A developer's portfolio built entirely as a 3D driving game in the browser. You drive a tiny car through his work. One of the most impressive things ever made in a browser.</p>
+          <div class="card-tags"><span class="tag">creative</span><span class="tag">interactive</span><span class="tag">✦ impress</span></div>
+        </div>
+      </div>
+
+      <div class="card" data-tags="creative interactive impress chill" data-url="https://musiclab.chromeexperiments.com" data-name="Music Lab" onclick="openSite(this)">
+        <div class="card-peek"><span class="card-name">Chrome Music Lab</span><span class="card-icon-btn">↗</span></div>
+        <div class="card-reveal">
+          <p class="card-desc">Google's collection of musical experiments — each one visually stunning and interactive. You can make music without knowing anything about music.</p>
+          <div class="card-tags"><span class="tag">creative</span><span class="tag">interactive</span><span class="tag">✦ impress</span></div>
+        </div>
+      </div>
+
+      <div class="card" data-tags="creative interactive impress chill" data-url="https://paperplanes.world" data-name="Paper Planes" onclick="openSite(this)">
+        <div class="card-peek"><span class="card-name">Paper Planes</span><span class="card-icon-btn">↗</span></div>
+        <div class="card-reveal">
+          <p class="card-desc">Fold a paper plane and throw it. Watch it fly across the globe and land somewhere with a real person. They throw it back. Quietly magical.</p>
+          <div class="card-tags"><span class="tag">creative</span><span class="tag">interactive</span><span class="tag">✦ impress</span></div>
+        </div>
+      </div>
+
+      <div class="card" data-tags="learn interactive" data-url="https://ncase.me/trust/" data-name="The Evolution of Trust" onclick="openSite(this)">
+        <div class="card-peek"><span class="card-name">The Evolution of Trust</span><span class="card-icon-btn">↗</span></div>
+        <div class="card-reveal">
+          <p class="card-desc">An interactive game theory explainer — why people cooperate, cheat, and trust. You play it like a game but leave understanding people differently.</p>
+          <div class="card-tags"><span class="tag">learn</span><span class="tag">interactive</span></div>
+        </div>
+      </div>
+
+      <div class="card" data-tags="creative interactive impress chill" data-url="https://theremin.app" data-name="Theremin" onclick="openSite(this)">
+        <div class="card-peek"><span class="card-name">Theremin</span><span class="card-icon-btn">↗</span></div>
+        <div class="card-reveal">
+          <p class="card-desc">Play a theremin with your mouse. Move your cursor and eerie music follows. The world's strangest instrument, now playable in a browser tab.</p>
+          <div class="card-tags"><span class="tag">creative</span><span class="tag">interactive</span><span class="tag">✦ impress</span></div>
+        </div>
+      </div>
+
+      <div class="card" data-tags="learn interactive impress" data-url="https://htwins.net/scale2/" data-name="Scale of the Universe" onclick="openSite(this)">
+        <div class="card-peek"><span class="card-name">Scale of the Universe</span><span class="card-icon-btn">↗</span></div>
+        <div class="card-reveal">
+          <p class="card-desc">Zoom from a quantum string to the observable universe. Everything in between — atoms, humans, planets, galaxies — placed in actual proportion.</p>
+          <div class="card-tags"><span class="tag">learn</span><span class="tag">interactive</span><span class="tag">✦ impress</span></div>
+        </div>
+      </div>
+
+      <div class="card" data-tags="learn interactive" data-url="https://explorabl.es" data-name="Explorable Explanations" onclick="openSite(this)">
+        <div class="card-peek"><span class="card-name">Explorable Explanations</span><span class="card-icon-btn">↗</span></div>
+        <div class="card-reveal">
+          <p class="card-desc">Essays where the content reacts to what you do. Drag a slider and the math changes. Click a variable and the story rewrites itself. Learning feels like playing.</p>
+          <div class="card-tags"><span class="tag">learn</span><span class="tag">interactive</span></div>
+        </div>
+      </div>
+
+      <div class="card" data-tags="learn interactive chill" data-url="https://lightningmaps.org" data-name="Lightning Maps" onclick="openSite(this)">
+        <div class="card-peek"><span class="card-name">Lightning Maps</span><span class="card-icon-btn">↗</span></div>
+        <div class="card-reveal">
+          <p class="card-desc">Every lightning strike on Earth happening in real time. Watch storms move across continents. Hypnotic at 2am with the sound on.</p>
+          <div class="card-tags"><span class="tag">learn</span><span class="tag">interactive</span><span class="tag">chill</span></div>
+        </div>
+      </div>
+
+      <div class="card" data-tags="chill learn interactive impress" data-url="https://radiooooo.com" data-name="Radiooooo" onclick="openSite(this)">
+        <div class="card-peek"><span class="card-name">Radiooooo</span><span class="card-icon-btn">↗</span></div>
+        <div class="card-reveal">
+          <p class="card-desc">Pick any country. Pick any decade. Hear what people were listening to. A time machine made of music — from 1900s Ethiopia to 1970s Japan.</p>
+          <div class="card-tags"><span class="tag">chill</span><span class="tag">learn</span><span class="tag">✦ impress</span></div>
+        </div>
+      </div>
+
+      <div class="card" data-tags="learn interactive" data-url="https://thetruesize.com" data-name="The True Size Of" onclick="openSite(this)">
+        <div class="card-peek"><span class="card-name">The True Size Of</span><span class="card-icon-btn">↗</span></div>
+        <div class="card-reveal">
+          <p class="card-desc">Drag any country across a world map and see its real size compared to others. Africa is larger than the US, China, and India combined. Your brain will break.</p>
+          <div class="card-tags"><span class="tag">learn</span><span class="tag">interactive</span></div>
+        </div>
+      </div>
+
+      <div class="card" data-tags="learn interactive creative" data-url="https://www.visual-literacy.org/periodic_table/periodic_table.html" data-name="Periodic Table of Visualisation" onclick="openSite(this)">
+        <div class="card-peek"><span class="card-name">Periodic Table of Visualisation</span><span class="card-icon-btn">↗</span></div>
+        <div class="card-reveal">
+          <p class="card-desc">Every way humans have ever visualised data — arranged like the periodic table. Hover each element and the visualisation appears. A reference you'll keep coming back to.</p>
+          <div class="card-tags"><span class="tag">learn</span><span class="tag">interactive</span><span class="tag">creative</span></div>
+        </div>
+      </div>
+
+      <div class="card" data-tags="learn interactive chill" data-url="https://hint.fm/wind/" data-name="Wind Map" onclick="openSite(this)">
+        <div class="card-peek"><span class="card-name">Wind Map</span><span class="card-icon-btn">↗</span></div>
+        <div class="card-reveal">
+          <p class="card-desc">Real-time wind patterns across the US rendered as delicate flowing lines. One of the most beautiful data visualisations ever made. Hauntingly calm.</p>
+          <div class="card-tags"><span class="tag">learn</span><span class="tag">interactive</span><span class="tag">chill</span></div>
+        </div>
+      </div>
+
+      <div class="card" data-tags="learn interactive" data-url="https://www.chronozoom.com" data-name="ChronoZoom" onclick="openSite(this)">
+        <div class="card-peek"><span class="card-name">ChronoZoom</span><span class="card-icon-btn">↗</span></div>
+        <div class="card-reveal">
+          <p class="card-desc">Zoom through all of time — from the Big Bang to the present. The universe, Earth, life, humanity, and modernity placed on one infinite scrollable timeline.</p>
+          <div class="card-tags"><span class="tag">learn</span><span class="tag">interactive</span></div>
+        </div>
+      </div>
+
+      <div class="card" data-tags="learn interactive" data-url="https://projectmosul.org" data-name="Rekrei" onclick="openSite(this)">
+        <div class="card-peek"><span class="card-name">Rekrei</span><span class="card-icon-btn">↗</span></div>
+        <div class="card-reveal">
+          <p class="card-desc">Lost heritage, reconstructed through crowdsourced photos. Ancient artefacts destroyed by war or time are being rebuilt in 3D. Digital archaeology at its most moving.</p>
+          <div class="card-tags"><span class="tag">learn</span><span class="tag">interactive</span></div>
+        </div>
+      </div>
+
+      <div class="card" data-tags="learn interactive" data-url="https://openheritage3d.org" data-name="Open Heritage 3D" onclick="openSite(this)">
+        <div class="card-peek"><span class="card-name">Open Heritage 3D</span><span class="card-icon-btn">↗</span></div>
+        <div class="card-reveal">
+          <p class="card-desc">Walk through ancient ruins in 3D. The Colosseum, Pompeii, temples across the world — all digitally preserved and explorable from your browser.</p>
+          <div class="card-tags"><span class="tag">learn</span><span class="tag">interactive</span></div>
+        </div>
+      </div>
+
+      <div class="card" data-tags="learn interactive impress" data-url="https://dinosaurpictures.org/ancient-earth" data-name="Ancient Earth" onclick="openSite(this)">
+        <div class="card-peek"><span class="card-name">Ancient Earth</span><span class="card-icon-btn">↗</span></div>
+        <div class="card-reveal">
+          <p class="card-desc">Type your city and see where it was on Earth 600 million years ago. Watch continents drift. Your city was once underwater. Sometimes in the middle of Pangaea.</p>
+          <div class="card-tags"><span class="tag">learn</span><span class="tag">interactive</span><span class="tag">✦ impress</span></div>
+        </div>
+      </div>
+
+      <div class="card" data-tags="learn interactive" data-url="https://www.worldhistorymap.com" data-name="World History Map" onclick="openSite(this)">
+        <div class="card-peek"><span class="card-name">World History Map</span><span class="card-icon-btn">↗</span></div>
+        <div class="card-reveal">
+          <p class="card-desc">Watch empires rise and fall across a world map from 3000 BC to today. Every border change animated. History becomes geography in real time.</p>
+          <div class="card-tags"><span class="tag">learn</span><span class="tag">interactive</span></div>
+        </div>
+      </div>
+
+      <div class="card" data-tags="learn interactive" data-url="https://www.timemaps.com/history/" data-name="TimeMaps" onclick="openSite(this)">
+        <div class="card-peek"><span class="card-name">TimeMaps</span><span class="card-icon-btn">↗</span></div>
+        <div class="card-reveal">
+          <p class="card-desc">Interactive maps of every major civilisation at any point in history. Click a date, see the world. Covers ancient Mesopotamia to the modern era.</p>
+          <div class="card-tags"><span class="tag">learn</span><span class="tag">interactive</span></div>
+        </div>
+      </div>
+
+      <div class="card" data-tags="game creative interactive date" data-url="https://drawasaurus.org" data-name="Drawasaurus" onclick="openSite(this)">
+        <div class="card-peek"><span class="card-name">Drawasaurus</span><span class="card-icon-btn">↗</span></div>
+        <div class="card-reveal">
+          <p class="card-desc">Multiplayer Pictionary — one person draws, everyone guesses. More intimate than Skribbl, better for small groups. Perfect for a date or a friend group.</p>
+          <div class="card-tags"><span class="tag">game</span><span class="tag">creative</span><span class="tag">date</span></div>
+        </div>
+      </div>
+
+      <!-- ── LOVE / DATE ── -->
+      <div class="card" data-tags="date creative chill" data-url="https://www.loveletterexchange.com" data-name="Love Letter Generator" onclick="openSite(this)">
+        <div class="card-peek"><span class="card-name">Love Letter Generator</span><span class="card-icon-btn">↗</span></div>
+        <div class="card-reveal">
+          <p class="card-desc">Type a name, receive a handwritten-style love letter. Dramatic, over the top, oddly sincere. Send to someone you love or someone you want to confuse.</p>
+          <div class="card-tags"><span class="tag">date</span><span class="tag">creative</span><span class="tag">chill</span></div>
+        </div>
+      </div>
+
+      <div class="card" data-tags="date interactive learn" data-url="https://www.nytimes.com/2015/01/11/fashion/no-37-big-question-fall-in-love-with-anyone.html" data-name="36 Questions to Fall in Love" onclick="openSite(this)">
+        <div class="card-peek"><span class="card-name">36 Questions to Fall in Love</span><span class="card-icon-btn">↗</span></div>
+        <div class="card-reveal">
+          <p class="card-desc">The NYT experiment that claims you can make any two people fall in love. 36 questions of increasing intimacy, ending with 4 minutes of eye contact. Try it.</p>
+          <div class="card-tags"><span class="tag">date</span><span class="tag">interactive</span></div>
+        </div>
+      </div>
+
+      <div class="card" data-tags="date chill creative" data-url="https://www.heyfromthefuture.com" data-name="Hey From the Future" onclick="openSite(this)">
+        <div class="card-peek"><span class="card-name">Hey From the Future</span><span class="card-icon-btn">↗</span></div>
+        <div class="card-reveal">
+          <p class="card-desc">Send a message to your future self or someone you love — to be delivered on a date you choose. A time capsule that arrives in their inbox years later.</p>
+          <div class="card-tags"><span class="tag">date</span><span class="tag">chill</span><span class="tag">creative</span></div>
         </div>
       </div>
 
@@ -400,7 +678,7 @@ footer { padding: 22px 0 30px; display: flex; align-items: center; justify-conte
 
   <footer>
     <span class="footer-text">Curious Crow — hand-picked by humans, for humans.</span>
-    <span class="footer-text"><strong id="visible-count" style="color:var(--accent)">24</strong> sites available</span>
+    <span class="footer-text"><strong id="visible-count" style="color:var(--accent)">57</strong> sites available</span>
   </footer>
 
 </div>
@@ -448,6 +726,12 @@ footer { padding: 22px 0 30px; display: flex; align-items: center; justify-conte
   function openSite(card) {
     const url = card.dataset.url;
     const name = card.dataset.name;
+    // Internal pages — navigate directly in same tab
+    if (!url.startsWith('http')) {
+      window.location.href = url;
+      return;
+    }
+    // External sites — open in new tab
     window.open(url, '_blank', 'noopener');
     showToast(name);
   }
