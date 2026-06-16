@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>How Cooked Are You</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#ffffff;
+  --s1:#f7f7f9;
+  --s2:#eeeeF2;
+  --b:rgba(0,0,0,0.08);
+  --bh:rgba(0,0,0,0.18);
+  --t:#111018;
+  --m:rgba(17,16,24,0.48);
+  --a:#7c6fff;
+  --ag:rgba(124,111,255,0.12);
+  --aglow:rgba(124,111,255,0.22);
+}
+html,body{min-height:100%;background:var(--bg);color:var(--t);font-family:'DM Sans',sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+body::before{content:'';position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse 60% 45% at 50% -10%,rgba(124,111,255,0.08),transparent 65%),
+    radial-gradient(ellipse 35% 30% at 90% 90%,rgba(255,111,180,0.05),transparent 60%);
+  pointer-events:none;z-index:0}
+
+/* ── NOISE ── */
+body::after{content:'';position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:1;opacity:.5}
+
+.shell{position:relative;z-index:2;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:36px 20px 80px}
+
+.back{align-self:flex-start;font-size:12px;color:rgba(17,16,24,0.22);text-decoration:none;letter-spacing:.04em;margin-bottom:0;transition:color .2s;display:flex;align-items:center;gap:5px}
+.back:hover{color:rgba(242,240,250,0.6)}
+
+/* ── TOP BAR ── */
+.topbar{width:100%;max-width:760px;display:flex;align-items:center;justify-content:space-between;margin-bottom:48px}
+.wordmark{font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-size:18px;color:var(--t);text-decoration:none;opacity:.6}
+.surprise-btn{display:inline-flex;align-items:center;gap:7px;background:rgba(124,111,255,0.12);border:1px solid rgba(124,111,255,0.25);color:rgba(124,111,255,0.9);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;padding:9px 18px;border-radius:100px;cursor:pointer;transition:all .18s;letter-spacing:.01em}
+.surprise-btn:hover{background:rgba(124,111,255,0.15);border-color:rgba(124,111,255,0.4);transform:translateY(-1px)}
+
+/* screens */
+.screen{width:100%;max-width:680px;display:none;flex-direction:column;align-items:center}
+.screen.active{display:flex}
+
+/* ── LANDING ── */
+.land-hero{text-align:center;margin-bottom:52px;width:100%}
+.land-eyebrow{font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:rgba(124,111,255,0.5);margin-bottom:16px}
+.land-h1{font-family:'Instrument Serif',Georgia,serif;font-size:clamp(48px,10vw,96px);font-weight:400;line-height:.95;letter-spacing:-.02em;color:var(--t);margin-bottom:12px}
+.land-h1 span{display:block;font-style:italic;color:rgba(17,16,24,0.22)}
+.land-p{font-size:15px;font-weight:300;color:var(--m);line-height:1.7;max-width:400px;margin:0 auto}
+
+/* category grid */
+.cat-grid{width:100%;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-bottom:12px}
+
+.cat-card{background:var(--s1);border:1px solid var(--b);border-radius:18px;padding:22px 20px;cursor:pointer;transition:all .2s ease;position:relative;overflow:hidden;text-align:left}
+.cat-card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .2s}
+.cat-card:hover{border-color:var(--bh);transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,0.4)}
+.cat-card:hover::before{opacity:1}
+.cat-card:active{transform:scale(.97)}
+
+/* each category has its own colour */
+.cat-card[data-c="zombie"]{--cc:rgba(120,220,80,0.06)}
+.cat-card[data-c="zombie"]::before{background:radial-gradient(circle at 0 0,rgba(120,220,80,0.08),transparent 70%)}
+.cat-card[data-c="zombie"]:hover{border-color:rgba(120,220,80,0.25)}
+.cat-card[data-c="zombie"] .cat-accent{color:#78dc50}
+
+.cat-card[data-c="plane"]{--cc:rgba(80,180,255,0.06)}
+.cat-card[data-c="plane"]::before{background:radial-gradient(circle at 0 0,rgba(80,180,255,0.08),transparent 70%)}
+.cat-card[data-c="plane"]:hover{border-color:rgba(80,180,255,0.25)}
+.cat-card[data-c="plane"] .cat-accent{color:#50b4ff}
+
+.cat-card[data-c="ex"]{--cc:rgba(255,100,160,0.06)}
+.cat-card[data-c="ex"]::before{background:radial-gradient(circle at 0 0,rgba(255,100,160,0.08),transparent 70%)}
+.cat-card[data-c="ex"]:hover{border-color:rgba(255,100,160,0.25)}
+.cat-card[data-c="ex"] .cat-accent{color:#ff64a0}
+
+.cat-card[data-c="search"]{--cc:rgba(255,180,50,0.06)}
+.cat-card[data-c="search"]::before{background:radial-gradient(circle at 0 0,rgba(255,180,50,0.08),transparent 70%)}
+.cat-card[data-c="search"]:hover{border-color:rgba(255,180,50,0.25)}
+.cat-card[data-c="search"] .cat-accent{color:#ffb432}
+
+.cat-card[data-c="presentation"]{--cc:rgba(200,120,255,0.06)}
+.cat-card[data-c="presentation"]::before{background:radial-gradient(circle at 0 0,rgba(200,120,255,0.08),transparent 70%)}
+.cat-card[data-c="presentation"]:hover{border-color:rgba(200,120,255,0.25)}
+.cat-card[data-c="presentation"] .cat-accent{color:#c878ff}
+
+.cat-card[data-c="salary"]{--cc:rgba(255,80,80,0.06)}
+.cat-card[data-c="salary"]::before{background:radial-gradient(circle at 0 0,rgba(255,80,80,0.08),transparent 70%)}
+.cat-card[data-c="salary"]:hover{border-color:rgba(255,80,80,0.25)}
+.cat-card[data-c="salary"] .cat-accent{color:#ff5050}
+
+.cat-card[data-c="parents"]{--cc:rgba(255,160,50,0.06)}
+.cat-card[data-c="parents"]::before{background:radial-gradient(circle at 0 0,rgba(255,160,50,0.08),transparent 70%)}
+.cat-card[data-c="parents"]:hover{border-color:rgba(255,160,50,0.25)}
+.cat-card[data-c="parents"] .cat-accent{color:#ffa032}
+
+.cat-card[data-c="judge"]{--cc:rgba(124,111,255,0.06)}
+.cat-card[data-c="judge"]::before{background:radial-gradient(circle at 0 0,rgba(124,111,255,0.08),transparent 70%)}
+.cat-card[data-c="judge"]:hover{border-color:rgba(124,111,255,0.25)}
+.cat-card[data-c="judge"] .cat-accent{color:#7c6fff}
+
+.cat-card[data-c="diary"]{--cc:rgba(80,220,180,0.06)}
+.cat-card[data-c="diary"]::before{background:radial-gradient(circle at 0 0,rgba(80,220,180,0.08),transparent 70%)}
+.cat-card[data-c="diary"]:hover{border-color:rgba(80,220,180,0.25)}
+.cat-card[data-c="diary"] .cat-accent{color:#50dcb4}
+
+.cat-card[data-c="famous"]{--cc:rgba(255,220,50,0.06)}
+.cat-card[data-c="famous"]::before{background:radial-gradient(circle at 0 0,rgba(255,220,50,0.08),transparent 70%)}
+.cat-card[data-c="famous"]:hover{border-color:rgba(255,220,50,0.25)}
+.cat-card[data-c="famous"] .cat-accent{color:#ffdc32}
+.cat-card[data-c="ghosting"]{--cc:rgba(150,100,255,0.06)}
+.cat-card[data-c="ghosting"]::before{background:radial-gradient(circle at 0 0,rgba(150,100,255,0.08),transparent 70%)}
+.cat-card[data-c="ghosting"]:hover{border-color:rgba(150,100,255,0.25)}
+.cat-card[data-c="ghosting"] .cat-accent{color:#9664ff}
+
+.cat-emoji{font-size:28px;margin-bottom:12px;display:block;line-height:1}
+.cat-name{font-size:15px;font-weight:500;color:var(--t);margin-bottom:4px;line-height:1.3}
+.cat-desc{font-size:12px;color:var(--m);font-weight:300;line-height:1.5}
+.cat-accent{display:none}
+
+/* ── QUESTION SCREEN ── */
+.q-shell{width:100%;display:flex;flex-direction:column;align-items:center;gap:0}
+
+/* big category header */
+.q-cat-bar{width:100%;display:flex;align-items:center;justify-content:space-between;margin-bottom:28px}
+.q-cat-name{font-size:13px;font-weight:500;letter-spacing:.06em;text-transform:uppercase}
+.q-counter{font-size:13px;color:var(--m);font-weight:300}
+
+/* progress — segmented */
+.seg-prog{display:flex;gap:5px;width:100%;margin-bottom:32px}
+.seg{flex:1;height:3px;border-radius:100px;background:rgba(0,0,0,0.08);transition:background .4s ease}
+.seg.done{background:currentColor}
+
+/* question card — big */
+.q-main{width:100%;margin-bottom:24px}
+.q-situation{font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--m);margin-bottom:16px}
+.q-emoji-big{font-size:52px;display:block;margin-bottom:20px;line-height:1;filter:drop-shadow(0 0 20px rgba(255,255,255,0.1))}
+.q-text{font-family:'Instrument Serif',Georgia,serif;font-size:clamp(22px,3.8vw,30px);color:var(--t);line-height:1.35;font-weight:400}
+
+/* options — horizontal on desktop */
+.q-opts{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:9px}
+@media(max-width:500px){.q-opts{grid-template-columns:1fr}}
+
+.q-opt{background:var(--s1);border:1px solid var(--b);border-radius:14px;padding:16px 18px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--t);cursor:pointer;transition:all .16s;text-align:left;line-height:1.5;position:relative;overflow:hidden}
+.q-opt::before{content:attr(data-letter);position:absolute;top:14px;right:16px;font-size:11px;font-weight:500;color:var(--m);letter-spacing:.04em;transition:color .16s}
+.q-opt:hover{border-color:var(--bh);background:var(--s2);transform:translateY(-2px)}
+.q-opt.sel{border-color:currentColor;background:rgba(255,255,255,0.05)}
+.q-opt.sel::before{color:currentColor}
+
+/* ── RESULT SCREEN ── */
+.res-shell{width:100%;display:flex;flex-direction:column;align-items:center}
+
+/* score — big horizontal bar */
+.score-section{width:100%;margin-bottom:32px}
+.score-top{display:flex;align-items:baseline;gap:12px;margin-bottom:12px}
+.score-num{font-family:'Instrument Serif',Georgia,serif;font-size:clamp(56px,12vw,100px);font-weight:400;line-height:1;letter-spacing:-.03em}
+.score-label{font-size:14px;color:var(--m);font-weight:300}
+.score-bar-wrap{width:100%;height:8px;background:rgba(0,0,0,0.06);border-radius:100px;overflow:hidden}
+.score-bar{height:100%;border-radius:100px;width:0%;transition:width 1.4s cubic-bezier(.4,0,.2,1)}
+.score-verdict{font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-size:clamp(24px,4vw,36px);color:var(--t);line-height:1.2;margin-top:20px;margin-bottom:8px;font-weight:400}
+.score-sub{font-size:14px;color:var(--m);font-weight:300;line-height:1.7;max-width:500px}
+
+/* answer breakdown */
+.ans-section{width:100%;margin-bottom:24px}
+.section-lbl{font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:rgba(0,0,0,0.3);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.section-lbl::after{content:'';flex:1;height:1px;background:rgba(0,0,0,0.06)}
+
+.ans-row{display:flex;gap:10px;align-items:flex-start;padding:14px 0;border-bottom:1px solid rgba(0,0,0,0.06)}
+.ans-row:last-child{border-bottom:none}
+.ans-q{font-size:13px;color:var(--m);font-weight:300;flex:1;line-height:1.5}
+.ans-score{font-size:12px;font-weight:500;padding:3px 10px;border-radius:100px;background:rgba(0,0,0,0.06);white-space:nowrap;align-self:flex-start;margin-top:2px}
+
+/* survival tips */
+.tips-card{width:100%;background:var(--s1);border:1px solid var(--b);border-radius:18px;padding:24px;margin-bottom:20px}
+.tips-title{font-size:13px;font-weight:500;color:var(--t);margin-bottom:14px}
+.tip-item{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid rgba(0,0,0,0.06);font-size:13px;color:var(--m);font-weight:300;line-height:1.55}
+.tip-item:last-child{border-bottom:none;padding-bottom:0}
+.tip-item::before{content:'→';color:currentColor;flex-shrink:0;margin-top:1px}
+
+/* action row */
+.act-row{display:flex;gap:10px;width:100%}
+.act-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;padding:15px;border-radius:100px;border:none;cursor:pointer;transition:all .18s}
+.act-primary{background:var(--a);color:#fff}
+.act-primary:hover{transform:translateY(-2px);box-shadow:0 8px 28px var(--aglow)}
+.act-secondary{background:transparent;border:1px solid var(--b);color:var(--m)}
+.act-secondary:hover{border-color:var(--bh);color:var(--t)}
+
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(70px);background:#111018;color:#ffffff;font-size:13px;font-weight:500;padding:11px 24px;border-radius:100px;z-index:999;transition:transform .28s cubic-bezier(.34,1.56,.64,1),opacity .28s;opacity:0;white-space:nowrap}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+</style>
+</head>
+<body>
+<div class="shell">
+
+<div class="topbar">
+  <a class="wordmark" href="index.html">Curious Crow</a>
+  <button class="surprise-btn" onclick="throwSomething()">🎲 &nbsp;Throw something at me</button>
+</div>
+
+<!-- ── LANDING ── -->
+<div class="screen active" id="sLand">
+  <div class="land-hero">
+    <p class="land-eyebrow">A survival assessment</p>
+    <h1 class="land-h1">How Cooked<span>Are You?</span></h1>
+    <p class="land-p">Pick a scenario. Answer 7 questions. Find out exactly how badly you'd survive it.</p>
+  </div>
+
+  <div class="cat-grid">
+
+    <div class="cat-card" data-c="zombie" onclick="startCat('zombie')">
+      <span class="cat-emoji">🧟</span>
+      <p class="cat-name">Zombie Apocalypse</p>
+      <p class="cat-desc">It's day one. The city is gone. How long do you last?</p>
+    </div>
+
+    <div class="cat-card" data-c="plane" onclick="startCat('plane')">
+      <span class="cat-emoji">✈️</span>
+      <p class="cat-name">Plane Going Down</p>
+      <p class="cat-desc">4 minutes. No pilot. What do you actually do?</p>
+    </div>
+
+    <div class="cat-card" data-c="ex" onclick="startCat('ex')">
+      <span class="cat-emoji">🛗</span>
+      <p class="cat-name">Stuck With Your Ex</p>
+      <p class="cat-desc">Lift breaks down. It's just you two. For 6 hours.</p>
+    </div>
+
+    <div class="cat-card" data-c="search" onclick="startCat('search')">
+      <span class="cat-emoji">🔍</span>
+      <p class="cat-name">Search History Goes Public</p>
+      <p class="cat-desc">Everyone you know can now see everything you've ever Googled.</p>
+    </div>
+
+    <div class="cat-card" data-c="presentation" onclick="startCat('presentation')">
+      <span class="cat-emoji">📊</span>
+      <p class="cat-name">Forgot the Presentation</p>
+      <p class="cat-desc">2 hours. 50 people. You have nothing prepared.</p>
+    </div>
+
+    <div class="cat-card" data-c="salary" onclick="startCat('salary')">
+      <span class="cat-emoji">💸</span>
+      <p class="cat-name">Salary Stops — 3 Months</p>
+      <p class="cat-desc">No warning. No savings timeline. How do you handle it?</p>
+    </div>
+
+    <div class="cat-card" data-c="parents" onclick="startCat('parents')">
+      <span class="cat-emoji">👨‍👩‍👧</span>
+      <p class="cat-name">Swap Lives With Your Parents</p>
+      <p class="cat-desc">Their age. Their job. Their marriage. For one week.</p>
+    </div>
+
+    <div class="cat-card" data-c="judge" onclick="startCat('judge')">
+      <span class="cat-emoji">⚖️</span>
+      <p class="cat-name">Explain Your Browser History</p>
+      <p class="cat-desc">To a judge. In court. Out loud. Everything.</p>
+    </div>
+
+    <div class="cat-card" data-c="diary" onclick="startCat('diary')">
+      <span class="cat-emoji">📖</span>
+      <p class="cat-name">Best Friend Read Your Diary</p>
+      <p class="cat-desc">6 months. Every entry. They know everything. Now what?</p>
+    </div>
+
+    <div class="cat-card" data-c="famous" onclick="startCat('famous')">
+      <span class="cat-emoji">📸</span>
+      <p class="cat-name">Famous Overnight</p>
+      <p class="cat-desc">10 million followers by morning. No idea why. Press wants a statement.</p>
+    </div>
+
+    <div class="cat-card" data-c="ghosting" onclick="startCat('ghosting')">
+      <span class="cat-emoji">👻</span>
+      <p class="cat-name">You Run Into Someone You Ghosted</p>
+      <p class="cat-desc">In person. Right now. They've seen you. There's nowhere to go.</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── QUESTIONS ── -->
+<div class="screen" id="sQ">
+  <div class="q-shell" style="width:100%">
+    <div class="q-cat-bar">
+      <span class="q-cat-name" id="qCatName" style="color:#fff">—</span>
+      <span class="q-counter" id="qCounter">1 / 7</span>
+    </div>
+    <div class="seg-prog" id="segProg" style="color:#7c6fff"></div>
+    <div class="q-main">
+      <p class="q-situation" id="qSituation">—</p>
+      <span class="q-emoji-big" id="qEmoji">—</span>
+      <p class="q-text" id="qText">—</p>
+    </div>
+    <div class="q-opts" id="qOpts"></div>
+  </div>
+</div>
+
+<!-- ── RESULT ── -->
+<div class="screen" id="sRes">
+  <div class="res-shell" style="width:100%">
+    <div class="score-section">
+      <div class="score-top">
+        <span class="score-num" id="scoreNum" style="color:#7c6fff">0%</span>
+        <span class="score-label">survival score</span>
+      </div>
+      <div class="score-bar-wrap">
+        <div class="score-bar" id="scoreBar" style="background:#7c6fff"></div>
+      </div>
+      <p class="score-verdict" id="scoreVerdict">—</p>
+      <p class="score-sub" id="scoreSub">—</p>
+    </div>
+
+    <div class="ans-section">
+      <p class="section-lbl">How you played it</p>
+      <div id="ansBreakdown"></div>
+    </div>
+
+    <div class="tips-card" id="tipsCard">
+      <p class="tips-title" id="tipsTitle">What actually would have saved you</p>
+      <div id="tipsList"></div>
+    </div>
+
+    <div class="act-row">
+      <button class="act-btn act-primary" onclick="copyResult()">Copy my result 📋</button>
+      <button class="act-btn act-secondary" onclick="showScreen('sLand')">Try another</button>
+    </div>
+  </div>
+</div>
+
+</div><!-- shell -->
+<div class="toast" id="toast">Copied ✓</div>
+
+<script>
+// ── CATEGORY DATA ──
+const CATS = {
+
+zombie:{
+  name:'Zombie Apocalypse', emoji:'🧟', color:'#78dc50',
+  situation:'Day 1. The city is overrun. You have 4 hours of daylight left.',
+  questions:[
+    { emoji:'🏠', text:'You\'re at home when it starts. First thing you do?',
+      opts:[
+        {t:'Lock every door and window, check what food I have, stay quiet',s:90},
+        {t:'Grab my phone, call family, figure out where everyone is',s:65},
+        {t:'Turn on the news to understand what\'s happening first',s:45},
+        {t:'Post about it on Instagram to see if others are seeing this too',s:10},
+      ]},
+    { emoji:'🎒', text:'You have 10 minutes to pack one bag. What goes in it?',
+      opts:[
+        {t:'Water, food, first aid, knife, lighter, cash, ID',s:95},
+        {t:'Clothes, charger, laptop, some snacks',s:35},
+        {t:'Whatever I can grab — I\'m panicking, be real',s:50},
+        {t:'I\'d spend 8 of those 10 minutes deciding and grab the wrong things',s:20},
+      ]},
+    { emoji:'👥', text:'You find a group of 6 survivors. Do you join them?',
+      opts:[
+        {t:'Only if I can assess them first — more people means more risk',s:80},
+        {t:'Yes immediately — safety in numbers always',s:60},
+        {t:'Depends entirely on how they look at me',s:70},
+        {t:'No. People are the real danger in these scenarios',s:75},
+      ]},
+    { emoji:'🔇', text:'Your phone battery is at 8%. A loved one is calling. Do you answer?',
+      opts:[
+        {t:'Yes but I keep it under 90 seconds',s:80},
+        {t:'Yes and I stay on as long as they need — it\'s family',s:50},
+        {t:'I let it go to voicemail and send a quick text instead',s:85},
+        {t:'I answer and talk for 20 minutes because obviously',s:15},
+      ]},
+    { emoji:'🏃', text:'You need to cross a street that has 3 zombies on it. You...',
+      opts:[
+        {t:'Create a distraction, wait for them to move, then cross fast',s:90},
+        {t:'Run straight through — speed is the advantage',s:55},
+        {t:'Find another route even if it takes longer',s:85},
+        {t:'Freeze for a minute trying to decide and miss the window',s:20},
+      ]},
+    { emoji:'🌙', text:'It\'s getting dark. Where do you sleep?',
+      opts:[
+        {t:'High up, one entry point, something I can barricade',s:95},
+        {t:'Wherever looks quiet and empty',s:50},
+        {t:'I don\'t sleep — I keep watch all night',s:40},
+        {t:'I probably don\'t sleep at all because I\'m terrified',s:35},
+      ]},
+    { emoji:'💊', text:'You find a pharmacy. You have 3 minutes inside. What do you take?',
+      opts:[
+        {t:'Antibiotics, painkillers, bandages, antiseptic — in that order',s:95},
+        {t:'Anything labelled important — I\'m not a doctor',s:55},
+        {t:'Whatever I can grab fastest',s:45},
+        {t:'I\'d spend the whole 3 minutes reading labels',s:20},
+      ]},
+  ],
+  verdicts:[
+    {min:80,title:'You actually survive this.',sub:'You think before you move, you don\'t panic-spend resources, and you understand that the quiet ones last longest. Respect.'},
+    {min:60,title:'You make it 2-3 weeks.',sub:'Good instincts, some questionable calls. The phone battery thing might have cost you.'},
+    {min:40,title:'Day 4. Maybe 5.',sub:'You\'re not built for this and that\'s okay. Most people aren\'t. You\'d have tried though.'},
+    {min:0, title:'You don\'t make it past day one.',sub:'The Instagram post was the end. It was always going to be the Instagram post.'},
+  ],
+  tips:['Never use a phone with less than 20% battery for long calls — text only','High ground with one exit beats any "comfortable" location','Antibiotics will save more lives than any weapon in the first month','Three zombies is never three zombies — there are always more nearby'],
+},
+
+plane:{
+  name:'Plane Going Down', emoji:'✈️', color:'#50b4ff',
+  situation:'Cruising altitude. Pilot is unconscious. You\'re the closest to the cockpit.',
+  questions:[
+    { emoji:'📣', text:'You realise the pilot is unconscious. First move?',
+      opts:[
+        {t:'Announce calmly that I need anyone with aviation experience to come forward immediately',s:90},
+        {t:'Run to the cockpit and try to figure it out myself',s:40},
+        {t:'Press every button I can find in the cockpit',s:15},
+        {t:'Scream for a flight attendant',s:65},
+      ]},
+    { emoji:'📡', text:'There\'s a radio in the cockpit. You pick it up. What do you say?',
+      opts:[
+        {t:'Mayday mayday mayday — state the flight number, position if I can find it, and the problem',s:95},
+        {t:'Hello? Can anyone hear me? The pilot is down',s:60},
+        {t:'I\'d try to figure out which channel first — probably too long',s:35},
+        {t:'I freeze because suddenly I can\'t remember how radios work',s:20},
+      ]},
+    { emoji:'🛬', text:'Air traffic control responds and starts talking you through landing. You...',
+      opts:[
+        {t:'Repeat everything back to confirm I understood it correctly',s:90},
+        {t:'Try my best but I miss half of what they say because I\'m panicking',s:50},
+        {t:'Follow instructions but ask them to slow down',s:85},
+        {t:'Put them on speaker and hope someone else in the cockpit takes over',s:60},
+      ]},
+    { emoji:'👨‍✈️', text:'A passenger says he has 40 hours of flight simulator experience. Do you let him take over?',
+      opts:[
+        {t:'Yes — I ask ATC first and defer to their judgment',s:90},
+        {t:'Yes immediately — anything is better than me',s:65},
+        {t:'No — simulator experience is not real experience',s:55},
+        {t:'I\'d spend 2 minutes interviewing him about his qualifications',s:30},
+      ]},
+    { emoji:'💺', text:'The cabin is panicking loudly. What do you do about it?',
+      opts:[
+        {t:'Assign the calmest-looking person to manage the cabin while I focus forward',s:85},
+        {t:'Nothing — I can\'t manage them and land a plane simultaneously',s:80},
+        {t:'Make a brief announcement telling everyone to brace and stay seated',s:90},
+        {t:'Panic alongside them briefly and then refocus',s:40},
+      ]},
+    { emoji:'⛽', text:'ATC asks about fuel. You have no idea. You...',
+      opts:[
+        {t:'Find the fuel gauge — it\'s labelled — and read the number out loud',s:90},
+        {t:'Tell them I\'m looking and describe everything I can see on the panel',s:85},
+        {t:'Guess based on how long we\'ve been flying',s:25},
+        {t:'Apologise and admit I have no idea',s:60},
+      ]},
+    { emoji:'🛟', text:'ATC says there\'s a 60% chance of a safe landing if you follow their instructions. You...',
+      opts:[
+        {t:'Take it — 60% is better than nothing and I\'m already committed',s:90},
+        {t:'Ask if there are any other options first',s:70},
+        {t:'Feel sick about the 40% but focus anyway',s:80},
+        {t:'Briefly consider whether this is how I expected things to end',s:35},
+      ]},
+  ],
+  verdicts:[
+    {min:80,title:'You land the plane.',sub:'Not perfectly. It\'s messy and loud and terrifying. But everyone gets out. You held it together when it mattered.'},
+    {min:60,title:'Rough landing. Most survive.',sub:'Some good instincts, some freeze moments. ATC did most of the heavy lifting. You followed well enough.'},
+    {min:40,title:'The simulator guy lands it.',sub:'You handed over at the right moment, which is actually a good call. Knowing your limits saved lives.'},
+    {min:0, title:'Controlled impact.',sub:'The radio part was where it went wrong. Mayday is the word. Three times. Flight number. That\'s all it needed.'},
+  ],
+  tips:['Mayday repeated three times is international distress — never skip it','Read gauges out loud to ATC — let them interpret, you just describe','The calmest person in any emergency is the most useful one — become them','60% odds in a plane crash is actually excellent — take it every time'],
+},
+
+ex:{
+  name:'Stuck With Your Ex', emoji:'🛗', color:'#ff64a0',
+  situation:'The lift stops. Emergency lighting on. Just you and them. 6 hours minimum.',
+  questions:[
+    { emoji:'😶', text:'The doors close. You make eye contact. First words out of your mouth?',
+      opts:[
+        {t:'"Well. This is something."',s:80},
+        {t:'Nothing — I look at my phone immediately',s:60},
+        {t:'"Are you serious right now"',s:45},
+        {t:'I laugh nervously and then immediately regret it',s:65},
+      ]},
+    { emoji:'📵', text:'Your phone dies at hour one. Now what?',
+      opts:[
+        {t:'Ask if they have a charger and accept the situation',s:75},
+        {t:'Sit in silence — I can do silence for 5 more hours',s:50},
+        {t:'Start talking because silence is suddenly worse',s:65},
+        {t:'Press the emergency button 47 more times',s:35},
+      ]},
+    { emoji:'🍕', text:'They have snacks in their bag. They offer you some. You...',
+      opts:[
+        {t:'Accept. I\'m not letting a breakup make me hungry.',s:85},
+        {t:'Decline politely — I don\'t want to owe them anything',s:40},
+        {t:'Accept and then immediately feel weird about it',s:60},
+        {t:'Ask what kind it is first and then decide',s:70},
+      ]},
+    { emoji:'💬', text:'They bring up "that one thing" that ended it. You...',
+      opts:[
+        {t:'Acknowledge it calmly — we have 4 hours, might as well',s:75},
+        {t:'Redirect immediately — this is not the time or the place',s:80},
+        {t:'Go silent and stare at the floor',s:40},
+        {t:'Finally say the thing I\'ve been holding for months',s:55},
+      ]},
+    { emoji:'😢', text:'One of you starts crying. Whoever it is — what happens?',
+      opts:[
+        {t:'I acknowledge it without making it a bigger moment than it needs to be',s:80},
+        {t:'I pretend I don\'t notice and look away',s:50},
+        {t:'I cry too. We\'re trapped in a box. What did anyone expect.',s:60},
+        {t:'I say "hey" quietly. Just hey.',s:75},
+      ]},
+    { emoji:'🔧', text:'At hour 4, engineers say it\'s another 2 hours. Your reaction?',
+      opts:[
+        {t:'Okay. Fine. We\'re past the weird part anyway.',s:80},
+        {t:'Visible distress that I try and fail to hide',s:50},
+        {t:'Press the emergency button again for no reason',s:40},
+        {t:'Look at them and say "cool" in a completely dead voice',s:70},
+      ]},
+    { emoji:'🚪', text:'The doors finally open. You part ways. How does it end?',
+      opts:[
+        {t:'We say something real. Not a lot. But something.',s:85},
+        {t:'Awkward wave and we walk in opposite directions fast',s:60},
+        {t:'One of us says "take care" and means it',s:80},
+        {t:'We exchange numbers again. God help us.',s:45},
+      ]},
+  ],
+  verdicts:[
+    {min:75,title:'You handled that with grace.',sub:'You didn\'t blow it up or shut down. You let it be what it was — weird and human and okay. That\'s the best possible outcome.'},
+    {min:55,title:'Uncomfortable but intact.',sub:'Some moments you handled well, some you didn\'t. You got out without saying anything you\'ll regret for years. Good enough.'},
+    {min:35,title:'You said the thing.',sub:'The thing you\'ve been holding. Whether that ends badly or surprisingly okay — we can\'t tell you. But you said it.'},
+    {min:0, title:'You exchanged numbers again.',sub:'Nobody is surprised. Not even you.'},
+  ],
+  tips:['Accepting snacks from an ex is not a surrender — it\'s protein','The emergency button does nothing after the first three presses','"Well. This is something." is genuinely one of the best things you can say','The cry is coming for one of you. Let it happen. The lift is a safe space.'],
+},
+
+search:{
+  name:'Search History Goes Public', emoji:'🔍', color:'#ffb432',
+  situation:'A notification. Your complete Google search history is now visible to everyone who knows you.',
+  questions:[
+    { emoji:'📱', text:'You see the notification. First instinct?',
+      opts:[
+        {t:'Delete the app immediately even though it\'s too late',s:50},
+        {t:'Call my best friend before they see it',s:65},
+        {t:'Sit very still and think about every search from the last year',s:70},
+        {t:'Laugh because honestly what are they going to find',s:85},
+      ]},
+    { emoji:'👨‍👩‍👧', text:'Your parents are going to see it. Your most pressing concern is...',
+      opts:[
+        {t:'The medical symptoms I searched at 3am and never acted on',s:75},
+        {t:'The salary comparison searches that reveal my actual ambitions',s:65},
+        {t:'Certain searches from 2019 that require historical context',s:55},
+        {t:'The sheer volume — it\'s the quantity that\'ll get them',s:60},
+      ]},
+    { emoji:'💼', text:'Your boss is now reading your history. They find...',
+      opts:[
+        {t:'"Is it normal to hate your job" — searched last Tuesday',s:60},
+        {t:'Competitors\' websites and salary benchmarking sites',s:55},
+        {t:'Completely benign things — I search like a grandparent',s:80},
+        {t:'Something that requires a meeting',s:30},
+      ]},
+    { emoji:'❤️', text:'Your crush can see it. Somewhere in there is evidence of...',
+      opts:[
+        {t:'Their Instagram profile being visited more than I\'d admit',s:50},
+        {t:'Nothing — I searched on incognito like a professional',s:90},
+        {t:'"[their name] + [their university]" — just the once',s:40},
+        {t:'A lyrics search for a song I associate with them. It\'s fine.',s:60},
+      ]},
+    { emoji:'🤔', text:'Someone asks you to explain a specific search. You...',
+      opts:[
+        {t:'Own it completely — it sounds worse than it is',s:80},
+        {t:'Provide the full context even though it makes it weirder',s:65},
+        {t:'Say "I was curious" and stare them down',s:75},
+        {t:'Deny it was me despite them literally having the data',s:20},
+      ]},
+    { emoji:'🕵️', text:'What does your search history actually reveal about you that you haven\'t told anyone?',
+      opts:[
+        {t:'How much I worry about health things I never mention',s:70},
+        {t:'That I have opinions about things I pretend not to care about',s:75},
+        {t:'The specific career I actually want vs the one I\'m doing',s:65},
+        {t:'Nothing — I am exactly who I appear to be',s:85},
+      ]},
+    { emoji:'🌅', text:'Two weeks later. The dust has settled. What changed?',
+      opts:[
+        {t:'Nothing — people forgot faster than I expected',s:80},
+        {t:'One relationship got unexpectedly closer because of it',s:75},
+        {t:'I now search very differently — aware of the record',s:60},
+        {t:'I started using DuckDuckGo and telling everyone about it',s:50},
+      ]},
+  ],
+  verdicts:[
+    {min:75,title:'You survived with dignity.',sub:'You owned it. People respect someone who doesn\'t crumble when they\'re exposed. Some things were uncomfortable. Nothing was unspeakable.'},
+    {min:55,title:'One conversation you weren\'t ready for.',sub:'Most of it was fine. One person now knows something about you that you\'d rather they didn\'t. That\'s the cost.'},
+    {min:35,title:'The 2019 searches are going to come up.',sub:'They always come up. You\'re going to have to explain. Start with the context.'},
+    {min:0, title:'Incognito was invented for a reason.',sub:'You didn\'t use it. Now everyone knows about the career you actually want, the person you keep looking up, and the symptoms you never got checked.'},
+  ],
+  tips:['The context for almost anything sounds worse than the search — lead with context','Medical symptom searches are so common nobody will judge them, get the tests done','Your real ambitions are visible in what you search late at night — those are worth paying attention to','People forget faster than you expect. The embarrassment timeline is shorter than it feels.'],
+},
+
+presentation:{
+  name:'Forgot the Presentation', emoji:'📊', color:'#c878ff',
+  situation:'It\'s 8am. Presentation is at 10. You have nothing. 50 people will be there.',
+  questions:[
+    { emoji:'⏰', text:'You wake up and remember. You have exactly 2 hours. First move?',
+      opts:[
+        {t:'Open laptop immediately — structure first, slides after if time',s:90},
+        {t:'Shower, coffee, then laptop — I need to be functional',s:70},
+        {t:'Text a colleague to see if they have any materials',s:65},
+        {t:'Sit with it for 5 minutes and consider my options',s:40},
+      ]},
+    { emoji:'📝', text:'You have no slides, no notes, no data. What do you present?',
+      opts:[
+        {t:'What I actually know — structure it around my existing knowledge',s:85},
+        {t:'3 slides: problem, solution, next steps. Minimal. Confident.',s:90},
+        {t:'Ask to reschedule with a credible excuse',s:60},
+        {t:'Wing it completely — I know this topic',s:55},
+      ]},
+    { emoji:'👔', text:'You arrive. Someone asks to see the deck beforehand. You...',
+      opts:[
+        {t:'"I\'m going off notes today — keeping it conversational"',s:85},
+        {t:'Send what I have and own that it\'s rough',s:70},
+        {t:'Say there was a technical issue with the file',s:50},
+        {t:'My face answers before my mouth does',s:30},
+      ]},
+    { emoji:'🎤', text:'You\'re 3 minutes in. It\'s going...',
+      opts:[
+        {t:'Better than expected — speaking from knowledge beats slides',s:80},
+        {t:'Okay but I\'m aware of everything I don\'t have',s:65},
+        {t:'Rough — I can feel the room',s:45},
+        {t:'I\'ve already decided this is a learning experience',s:55},
+      ]},
+    { emoji:'🙋', text:'A question comes up that you definitely don\'t know the answer to. You...',
+      opts:[
+        {t:'"Good question — I\'ll get you the exact figure by EOD"',s:90},
+        {t:'Give my best estimate and flag that it\'s an estimate',s:80},
+        {t:'Pivot to something adjacent that I do know',s:75},
+        {t:'Panic for one visible second and then recover',s:50},
+      ]},
+    { emoji:'📉', text:'Someone notices there\'s no data in your presentation. You...',
+      opts:[
+        {t:'Acknowledge it directly — "I\'m going to follow up with the numbers"',s:85},
+        {t:'Say the data is still being compiled — not entirely untrue',s:60},
+        {t:'Say this is a strategic overview, data deck to follow',s:80},
+        {t:'Apologise and lose some of the room',s:35},
+      ]},
+    { emoji:'🏁', text:'It\'s over. Someone says "that was different from what we expected." You...',
+      opts:[
+        {t:'"I\'ll follow up with everything in writing by tomorrow"',s:90},
+        {t:'"Different how?" — I need to know',s:75},
+        {t:'Smile and say thank you and leave immediately',s:60},
+        {t:'Tell them the full truth about this morning over coffee later',s:70},
+      ]},
+  ],
+  verdicts:[
+    {min:80,title:'You pulled it off.',sub:'Speaking from knowledge with no slides is actually more memorable than a deck. They\'ll forget the format. They won\'t forget that you held the room.'},
+    {min:60,title:'You got through it.',sub:'Not your best work. A few moments that cost you. But you showed up and that counts for more than most people admit.'},
+    {min:40,title:'It was rough and everyone knew.',sub:'The follow-up email is going to do a lot of heavy lifting here. Send it today. Be specific.'},
+    {min:0, title:'You rescheduled.',sub:'Sometimes that\'s the right call. The credible excuse bought you time. Use the time.'},
+  ],
+  tips:['"I\'ll follow up with the exact numbers" is a complete and professional sentence','3 slides: problem, solution, next step — that is a full presentation','Speaking without slides signals confidence even when it\'s chaos underneath','The follow-up email after a bad presentation can fully recover it if it\'s good'],
+},
+
+salary:{
+  name:'Salary Stops — 3 Months', emoji:'💸', color:'#ff5050',
+  situation:'No warning. Your account receives nothing this month. HR isn\'t responding.',
+  questions:[
+    { emoji:'📊', text:'You check your account and the salary isn\'t there. Day one. What do you do?',
+      opts:[
+        {t:'Email HR formally, check my contract, and document everything',s:90},
+        {t:'Call my manager directly and ask what\'s going on',s:75},
+        {t:'Check my balance three times to make sure I\'m reading it right',s:50},
+        {t:'Panic privately for an hour and then email HR',s:55},
+      ]},
+    { emoji:'💳', text:'What\'s your actual financial situation if salary stops today?',
+      opts:[
+        {t:'2-3 months runway — I have savings',s:90},
+        {t:'About a month if I cut everything unnecessary',s:65},
+        {t:'2-3 weeks of serious discomfort',s:35},
+        {t:'I would feel this by next week',s:15},
+      ]},
+    { emoji:'✂️', text:'Month one. You cut expenses. What goes first?',
+      opts:[
+        {t:'Subscriptions, dining out, anything that isn\'t rent or food',s:85},
+        {t:'I make a spreadsheet and find every unnecessary recurring charge',s:90},
+        {t:'I cut what I can but I\'m not very sure what I spend on',s:45},
+        {t:'I haven\'t looked at my subscriptions in 8 months honestly',s:30},
+      ]},
+    { emoji:'👨‍👩‍👧', text:'Do you tell your family what\'s happening?',
+      opts:[
+        {t:'Yes — early, before it becomes a crisis',s:85},
+        {t:'Not yet — I don\'t want to worry them until I have to',s:60},
+        {t:'I tell one person I trust completely',s:75},
+        {t:'No — I\'ll handle it and they\'ll never need to know',s:45},
+      ]},
+    { emoji:'💼', text:'You start looking for freelance or extra work. Realistically...',
+      opts:[
+        {t:'I have a skill I can monetise fairly quickly',s:85},
+        {t:'It\'ll take 2-3 weeks to find something but I will',s:70},
+        {t:'I\'m not sure what I\'d offer but I\'d figure it out',s:55},
+        {t:'This is the part where I have no plan',s:25},
+      ]},
+    { emoji:'⚖️', text:'Month 2. No resolution. Do you get legal advice?',
+      opts:[
+        {t:'Yes — my contract is being violated, I have rights',s:90},
+        {t:'I research what my options are first',s:80},
+        {t:'I\'m still hoping HR responds before it gets to that',s:45},
+        {t:'I didn\'t know this was an option',s:35},
+      ]},
+    { emoji:'🌅', text:'Month 3. You\'ve survived. What did this reveal about you?',
+      opts:[
+        {t:'That I\'m more resourceful than I thought',s:85},
+        {t:'That my financial cushion was dangerously thin',s:75},
+        {t:'That I rely on stability more than I admitted',s:65},
+        {t:'That I need to have a very different relationship with money going forward',s:80},
+      ]},
+  ],
+  verdicts:[
+    {min:80,title:'You handled a crisis like someone who\'s been preparing for one.',sub:'The documentation, the legal awareness, the savings — this hurt but you had the infrastructure to survive it. Most people don\'t.'},
+    {min:60,title:'You got through it but it was close.',sub:'Some good instincts, some gaps. The family conversation probably happened later than it should have. But you made it.'},
+    {min:35,title:'Month 2 was the hard month.',sub:'The savings weren\'t there. The legal option surprised you. You\'ll build the cushion after this. Everyone does it the hard way first.'},
+    {min:0, title:'This is why the emergency fund exists.',sub:'You didn\'t have one. Now you know exactly why everyone keeps saying to have one. Three months of expenses, somewhere you can\'t easily touch.'},
+  ],
+  tips:['Document every missing payment date in writing — this is evidence','Your contract outlines notice periods and payment obligations — read it','3 months of expenses in a separate account is the minimum cushion worth having','Legal advice on salary non-payment is often free at the first consultation'],
+},
+
+parents:{
+  name:'Swap Lives With Your Parents', emoji:'👨‍👩‍👧', color:'#ffa032',
+  situation:'You wake up as them. Their age. Their body. Their responsibilities. Their marriage. One week.',
+  questions:[
+    { emoji:'⏰', text:'Their alarm goes off at 6am. You have their job today. You...',
+      opts:[
+        {t:'Get up — I\'m them now, I handle what they handle',s:80},
+        {t:'Spend 10 minutes feeling the weight of the day before I move',s:75},
+        {t:'Immediately feel guilty about every time I complained about waking up',s:70},
+        {t:'Genuinely do not know what their morning routine is',s:50},
+      ]},
+    { emoji:'💼', text:'You\'re at their workplace. You don\'t fully know what they do. You...',
+      opts:[
+        {t:'Watch carefully and follow their routine — most jobs have patterns',s:80},
+        {t:'Tell a trusted colleague I\'m having an off week and need to recalibrate',s:70},
+        {t:'Realise I\'ve never actually understood what they do all day',s:65},
+        {t:'Sit in their chair and feel something I can\'t name',s:75},
+      ]},
+    { emoji:'💰', text:'You look at their finances. You see...',
+      opts:[
+        {t:'More going out than I imagined — bills I\'ve never thought about',s:80},
+        {t:'How much of their income goes toward me and my life',s:75},
+        {t:'A picture of financial life I wasn\'t prepared for',s:70},
+        {t:'Numbers I immediately close because I feel like I shouldn\'t be seeing them',s:65},
+      ]},
+    { emoji:'💬', text:'You have to have a conversation with their spouse — your other parent. You...',
+      opts:[
+        {t:'Listen more than I speak — I don\'t know the texture of their relationship',s:85},
+        {t:'Realise their relationship is more complex than I\'ve seen from outside',s:80},
+        {t:'Say something small and kind and feel like I did something right',s:75},
+        {t:'Understand suddenly why they are the way they are with each other',s:80},
+      ]},
+    { emoji:'📱', text:'You see their messages. People your age texting them for things. You...',
+      opts:[
+        {t:'Handle them — this is the job',s:70},
+        {t:'Feel the constant pull of being needed from all directions',s:85},
+        {t:'Notice they never complain in their responses',s:80},
+        {t:'Understand now why they always seem slightly tired',s:85},
+      ]},
+    { emoji:'🌙', text:'Their bedtime. They sleep at 10:30pm. You...',
+      opts:[
+        {t:'Am actually exhausted — the day used everything',s:85},
+        {t:'Lie there thinking about everything they carry that I didn\'t know about',s:80},
+        {t:'Realise this is the first time I\'ve thought about their life from inside it',s:85},
+        {t:'Text my real self — somehow — and say sorry for a few things',s:90},
+      ]},
+    { emoji:'🔄', text:'You swap back. First thing you do?',
+      opts:[
+        {t:'Call them. Just to talk.',s:95},
+        {t:'Sit quietly for a while with what I learned',s:85},
+        {t:'Say thank you in a way I haven\'t before',s:90},
+        {t:'Start paying more attention to what they actually do every day',s:85},
+      ]},
+  ],
+  verdicts:[
+    {min:80,title:'You came back changed.',sub:'You saw the weight. You felt the routine. You understood something about their life that most people only understand when it\'s too late. Call them.'},
+    {min:60,title:'You lasted the week.',sub:'There were moments that got to you. The finances. The messages. Something in the bedtime. You\'ll look at them differently now.'},
+    {min:40,title:'Day 3 was the hard one.',sub:'The job was fine. The relationship was the part you weren\'t ready for. The complexity of two people who\'ve shared a life for decades — that surprised you.'},
+    {min:0, title:'You didn\'t know their job.',sub:'You\'ve never asked. That\'s okay. Ask now.'},
+  ],
+  tips:['Ask your parents what they actually do at work — most people have never asked','The financial conversation is worth having before it becomes necessary','"Thank you" said specifically is worth more than thank you said generally','Most of what they carry, they carry quietly — that\'s worth noticing'],
+},
+
+judge:{
+  name:'Explain Your Browser History', emoji:'⚖️', color:'#7c6fff',
+  situation:'Courtroom. Judge. Jury of 12. Your complete browser history on the screen behind you.',
+  questions:[
+    { emoji:'🔍', text:'The prosecutor opens with your most searched topic this year. It\'s...',
+      opts:[
+        {t:'Completely benign — symptoms, recipes, news. I search like a grandparent.',s:85},
+        {t:'A mix of reasonable things and things with context',s:65},
+        {t:'"[Someone\'s name]" — searched more than I\'d like to admit',s:40},
+        {t:'Something that requires me to speak first before anyone can react',s:30},
+      ]},
+    { emoji:'😅', text:'They pull up a search from 2am on a Tuesday. "How to tell if someone is mad at you." The jury looks at you. You...',
+      opts:[
+        {t:'Nod slowly. Yes. That was a Tuesday.',s:85},
+        {t:'"I was going through something. Context is important."',s:80},
+        {t:'Maintain eye contact and say nothing',s:75},
+        {t:'Look for the exit',s:30},
+      ]},
+    { emoji:'💊', text:'Your medical searches are on display. You\'ve Googled symptoms you never got checked. The judge asks why. You...',
+      opts:[
+        {t:'"Your honour, I think we all know why"',s:80},
+        {t:'Explain that Google is cheaper than a first appointment',s:75},
+        {t:'Agree that I should probably make the appointment',s:70},
+        {t:'List the symptoms out loud and accidentally diagnose myself in court',s:50},
+      ]},
+    { emoji:'💼', text:'They find "average salary for [your job] in [your city]" — searched every 3 months. You...',
+      opts:[
+        {t:'"I\'m an informed professional. This is research."',s:85},
+        {t:'Nod. Yes. I know what I\'m worth.',s:80},
+        {t:'Feel briefly seen in a way that\'s uncomfortable',s:70},
+        {t:'Look at my employer in the gallery and say nothing',s:75},
+      ]},
+    { emoji:'🎬', text:'The jury sees your most visited websites. Ranked by time spent. What\'s number one?',
+      opts:[
+        {t:'Something embarrassing but explainable',s:65},
+        {t:'YouTube — which tells its own story',s:70},
+        {t:'A news site, actually — I\'m a functional adult',s:85},
+        {t:'Something I\'m going to take a moment on',s:40},
+      ]},
+    { emoji:'❓', text:'The judge asks directly: "Is there anything in this history you\'d like to explain before we continue?" You...',
+      opts:[
+        {t:'"Yes. The 2019 searches. Let me provide some context."',s:85},
+        {t:'"Your honour, all searches were made by a person doing their best"',s:80},
+        {t:'"No, I\'ll take my chances"',s:70},
+        {t:'Ask for a recess',s:55},
+      ]},
+    { emoji:'🏛️', text:'Final statement. What\'s your defence?',
+      opts:[
+        {t:'"Every search represents a moment of genuine curiosity or mild anxiety. I am human."',s:90},
+        {t:'"The context for everything here is available upon request"',s:80},
+        {t:'"I searched what I searched. I regret some of it. We move on."',s:85},
+        {t:'"I\'d like to point out that everyone in this room has a search history"',s:85},
+      ]},
+  ],
+  verdicts:[
+    {min:80,title:'Case dismissed.',sub:'You owned it. Context, composure, and the jury appreciated the honesty. "I am human" is an airtight defence.'},
+    {min:60,title:'Hung jury.',sub:'Half believed you. The 2019 searches did some damage. The medical ones actually helped — very relatable.'},
+    {min:40,title:'Misdemeanour. Community service.',sub:'The Tuesday 2am search was hard to explain. "Going through something" needed more detail.'},
+    {min:0, title:'You asked for a recess and didn\'t come back.',sub:'A bold choice. The judge was not pleased. The 2019 searches remain in evidence.'},
+  ],
+  tips:['"I am human" is genuinely a strong legal defence for internet behaviour','Medical symptom searching is the most universally relatable search category — lean into it','The 2am Tuesday searches are always the ones that get you — lead with context','Everyone on that jury has a search history. The "we\'re all the same" defence works.'],
+},
+
+diary:{
+  name:'Best Friend Read Your Diary', emoji:'📖', color:'#50dcb4',
+  situation:'6 months of entries. They know everything. They\'ve said nothing. Until now.',
+  questions:[
+    { emoji:'😶', text:'They tell you they\'ve been reading it. Your immediate reaction?',
+      opts:[
+        {t:'Calm exterior. Complete internal rearrangement of everything.',s:75},
+        {t:'"How long?" — I need the exact timeline',s:80},
+        {t:'Genuine silence for 10 full seconds',s:70},
+        {t:'Ask what specifically they read even though this makes it worse',s:60},
+      ]},
+    { emoji:'📓', text:'6 months of entries. What do they now know about you that nobody else knows?',
+      opts:[
+        {t:'The version of myself I\'m working toward and haven\'t told anyone yet',s:75},
+        {t:'The specific things about our friendship that have bothered me',s:60},
+        {t:'Feelings I have for someone I\'ve never mentioned',s:55},
+        {t:'How much I think, alone, about things I\'d never say out loud',s:70},
+      ]},
+    { emoji:'😤', text:'Are you angry at them?',
+      opts:[
+        {t:'Yes. This is a clear violation regardless of what they found.',s:80},
+        {t:'Yes but it\'s complicated by how long we\'ve been friends',s:75},
+        {t:'More hurt than angry — there\'s a difference',s:80},
+        {t:'I\'m trying to figure out which emotion arrives first',s:65},
+      ]},
+    { emoji:'💬', text:'They say: "I read it because I was worried about you." You...',
+      opts:[
+        {t:'Acknowledge the concern and the violation separately — both are true',s:85},
+        {t:'"That doesn\'t make it okay" — and I mean it',s:80},
+        {t:'Feel the complexity of being violated by someone who loves you',s:80},
+        {t:'Ask what specifically worried them',s:70},
+      ]},
+    { emoji:'🤝', text:'Do you want to save the friendship?',
+      opts:[
+        {t:'Yes — this is the kind of thing you work through with someone important',s:80},
+        {t:'Yes but it will take time and they need to understand that',s:85},
+        {t:'I don\'t know yet — I need to sit with it first',s:75},
+        {t:'This depends entirely on what they say next',s:70},
+      ]},
+    { emoji:'📝', text:'You keep a diary partly to process things privately. What does this change?',
+      opts:[
+        {t:'I keep writing — the practice matters more than the breach',s:80},
+        {t:'I start a new one and keep it differently',s:75},
+        {t:'I stop for a while — the safety of it is compromised',s:65},
+        {t:'I write about this conversation in it tonight',s:85},
+      ]},
+    { emoji:'🌅', text:'3 months later. Where are you?',
+      opts:[
+        {t:'Still friends but with new boundaries and a new level of honesty',s:85},
+        {t:'We worked through it — the friendship is actually closer now',s:75},
+        {t:'Still processing — some things take longer',s:70},
+        {t:'We don\'t talk anymore and I\'m still deciding how I feel about that',s:60},
+      ]},
+  ],
+  verdicts:[
+    {min:80,title:'You navigated this with integrity.',sub:'You separated the violation from the love. You stayed angry for the right reasons. If the friendship survived, it\'s real.'},
+    {min:60,title:'The friendship is in a different place.',sub:'Not worse, not better — different. You know each other more honestly now than you did. That has a cost and a value.'},
+    {min:40,title:'You needed more time than you took.',sub:'The conversation happened before you were ready. The things you wanted to say came out wrong. That\'s okay. There\'s more to say still.'},
+    {min:0, title:'You wrote about it that night.',sub:'Of course you did. The diary is how you process. That hasn\'t changed. Keep writing.'},
+  ],
+  tips:['Anger and love existing simultaneously is not a contradiction — hold both','The violation and the concern are separate things — address them separately','"I need time" said directly is better than distance that doesn\'t explain itself','If the friendship survives this, it\'s built on something real'],
+},
+
+famous:{
+  name:'Famous Overnight', emoji:'📸', color:'#ffdc32',
+  situation:'You wake up. 10 million followers. Trending. No idea why. Press wants a statement by noon.',
+  questions:[
+    { emoji:'📱', text:'You open your phone. Notifications won\'t stop. First thing you do?',
+      opts:[
+        {t:'Find out WHY before I respond to anything',s:90},
+        {t:'Call someone I trust to tell me what\'s happening',s:80},
+        {t:'Post something immediately to control the narrative',s:35},
+        {t:'Sit completely still and read everything until I understand',s:75},
+      ]},
+    { emoji:'🗞️', text:'A journalist calls. Wants a statement in an hour. You...',
+      opts:[
+        {t:'"I\'ll have something for you in three hours" — I need to understand this first',s:85},
+        {t:'Ask what angle they\'re covering before I say anything at all',s:90},
+        {t:'Decline for now — no statement until I have counsel',s:80},
+        {t:'Say something off the cuff because I\'m still waking up',s:20},
+      ]},
+    { emoji:'💰', text:'Brands are DMing you sponsorship offers. In the first 6 hours, you...',
+      opts:[
+        {t:'Respond to none of them — I don\'t know what I\'m worth yet',s:85},
+        {t:'Screenshot everything for later and close the app',s:80},
+        {t:'Ask someone who knows what these numbers mean',s:75},
+        {t:'Accept the most exciting one immediately',s:20},
+      ]},
+    { emoji:'👀', text:'People are digging through your old posts. They find...',
+      opts:[
+        {t:'Nothing that changes who I am — I post like I\'d post forever',s:85},
+        {t:'Some things with context that got lost over time',s:60},
+        {t:'A couple of things I need to address quickly',s:55},
+        {t:'The 2019 post. Of course the 2019 post.',s:40},
+      ]},
+    { emoji:'🗣️', text:'You have to post something. Your first statement as a public person is...',
+      opts:[
+        {t:'Short, honest, specific — I say what I actually know and nothing more',s:90},
+        {t:'A note explaining I\'m taking time to understand what\'s happening',s:85},
+        {t:'Something I draft 11 times before posting',s:75},
+        {t:'Whatever feels right in the moment — authenticity matters',s:55},
+      ]},
+    { emoji:'👥', text:'People you haven\'t spoken to in years are reaching out. You...',
+      opts:[
+        {t:'Respond warmly but make no commitments',s:80},
+        {t:'Prioritise the people who were there before this',s:90},
+        {t:'Respond to none of them until the dust settles',s:75},
+        {t:'Feel suddenly very aware of who reached out and who didn\'t',s:80},
+      ]},
+    { emoji:'🌙', text:'End of day one. 10 million people know your name. You feel...',
+      opts:[
+        {t:'Cautious — this can go any direction and I know it',s:85},
+        {t:'Surprisingly okay — I handled what I could',s:80},
+        {t:'Grateful for whoever I called first thing this morning',s:85},
+        {t:'Like I need the people who knew me yesterday to be there tomorrow',s:90},
+      ]},
+  ],
+  verdicts:[
+    {min:80,title:'You handled day one well.',sub:'You didn\'t post first and understand second. You found out why before you responded. That\'s rarer than it should be. The foundation is right.'},
+    {min:60,title:'You got through it without a scandal.',sub:'A few reactive moments but nothing irreversible. The brand DM situation needs revisiting. Get someone who knows these numbers.'},
+    {min:40,title:'The 2019 post is going to trend.',sub:'You posted too fast. The brands got you. Give no interviews until you understand what made you famous in the first place.'},
+    {min:0, title:'You accepted the sponsorship.',sub:'In the first six hours. Before you knew what you were worth or why you were famous. The next six months are going to be a lesson.'},
+  ],
+  tips:['Never give a statement before you understand why you\'re being asked for one','Your old posts are going to be found — post like they will be from day one','The people who knew you before this are worth more than the reach','"No comment for now" is a complete and professional response to any press inquiry'],
+},
+,
+
+ghosting:{
+  name:'You Run Into Someone You Ghosted', emoji:'👻', color:'#9664ff',
+  situation:'You're in a cafe, a mall, a street. You see them before they see you. Then they see you.',
+  questions:[
+    { emoji:'👀', text:'You spot them first. You have about 3 seconds. What do you do?',
+      opts:[
+        {t:'Make eye contact and commit — I'm not the kind of person who hides',s:80},
+        {t:'Pretend to look at my phone very intensely',s:45},
+        {t:'Change direction before they clock me',s:35},
+        {t:'Stand completely still like that makes me invisible',s:20},
+      ]},
+    { emoji:'😬', text:'Too late. Eye contact made. Their face does something complicated. You...',
+      opts:[
+        {t:'Smile and walk over — there's no dignified version of running',s:85},
+        {t:'Give a small wave and see if they come to me',s:70},
+        {t:'Mouth "hey" from a distance and look back at my phone',s:40},
+        {t:'My face just... reacts before I can control it',s:50},
+      ]},
+    { emoji:'💬', text:'"Hey! I've been meaning to reach out—" they start. You...',
+      opts:[
+        {t:'"I'm sorry, genuinely. I went quiet and that wasn't fair."',s:90},
+        {t:'"Yeah things got really crazy, you know how it is"',s:45},
+        {t:'Laugh nervously and let them fill the silence',s:40},
+        {t:'"Me too! We should catch up!" — noncommittal and we both know it',s:30},
+      ]},
+    { emoji:'🤔', text:'They ask why you went quiet. Directly. What's your actual answer?',
+      opts:[
+        {t:'The honest one, even if it's uncomfortable',s:90},
+        {t:'A partial truth that sounds complete',s:60},
+        {t:'Something vague about life and timing',s:40},
+        {t:'"I don't know" — which is somehow the most honest thing',s:75},
+      ]},
+    { emoji:'⏱️', text:'This conversation has been going for 4 minutes. It's...',
+      opts:[
+        {t:'Actually okay — less terrible than I feared',s:80},
+        {t:'Awkward but we're both trying',s:70},
+        {t:'Being held together by pure social obligation',s:50},
+        {t:'The longest 4 minutes of my recent life',s:45},
+      ]},
+    { emoji:'📱', text:'They say "let's actually hang out soon". You...',
+      opts:[
+        {t:'Say yes and mean it this time',s:85},
+        {t:'Say yes and immediately feel guilty that I might not',s:50},
+        {t:'"For sure" — which means nothing and we both know it',s:30},
+        {t:'Say I'd like that and leave it genuinely open',s:80},
+      ]},
+    { emoji:'🚶', text:'You part ways. Walking away, you feel...',
+      opts:[
+        {t:'Relieved it happened — it was overdue',s:85},
+        {t:'Guilty that I ever let it get to this point',s:75},
+        {t:'Glad we ran into each other, actually',s:80},
+        {t:'Determined to not let it go quiet again — this time',s:90},
+      ]},
+  ],
+  verdicts:[
+    {min:80,title:'You handled that better than most people would.',sub:'You didn't run. You didn't fake it. You said something real and that's rarer than it sounds. If you meant it about hanging out — follow up this week.'},
+    {min:60,title:'Awkward but survivable.',sub:'A few deflections but nothing unsalvageable. The "things got crazy" line did some damage. A text later today would fix most of it.'},
+    {min:40,title:'You got through it on autopilot.',sub:'The words came out but nothing was resolved. They know it and you know it. One honest message would change this entirely.'},
+    {min:0, title:'You said "for sure" and meant nothing.',sub:'They said "for sure" too. You're both off the hook and nothing changed. Until next time you run into each other.'},
+  ],
+  tips:['Following up within 48 hours turns a chance encounter into an actual reconnection','The honest reason you went quiet is almost always more understandable than the person imagined','Ghosting is usually about you, not them — saying that out loud is 80% of the apology','Running is never the answer. They saw you.'],
+}
+};
+
+// ── STATE ──
+let cat = null;
+let qIndex = 0;
+let scores = [];
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function throwSomething(){
+  const keys = Object.keys(CATS);
+  const pick = keys[Math.floor(Math.random()*keys.length)];
+  startCat(pick);
+}
+
+function startCat(key){
+  cat = CATS[key];
+  qIndex = 0;
+  scores = [];
+  // set colour vars
+  document.documentElement.style.setProperty('--qcolor', cat.color);
+  // build seg prog
+  const seg = document.getElementById('segProg');
+  seg.innerHTML = '';
+  seg.style.color = cat.color;
+  for(let i=0;i<7;i++){
+    const d = document.createElement('div');
+    d.className='seg';
+    d.id='seg'+i;
+    seg.appendChild(d);
+  }
+  document.getElementById('qCatName').textContent = cat.name;
+  document.getElementById('qCatName').style.color = cat.color;
+  showScreen('sQ');
+  renderQ();
+}
+
+function renderQ(){
+  const q = cat.questions[qIndex];
+  document.getElementById('qCounter').textContent = `${qIndex+1} / 7`;
+  document.getElementById('qSituation').textContent = cat.situation;
+  document.getElementById('qEmoji').textContent = q.emoji;
+  document.getElementById('qText').textContent = q.text;
+
+  // segs
+  for(let i=0;i<7;i++){
+    const seg = document.getElementById('seg'+i);
+    if(i < qIndex) seg.classList.add('done');
+    else seg.classList.remove('done');
+  }
+
+  const opts = document.getElementById('qOpts');
+  opts.innerHTML='';
+  const letters=['A','B','C','D'];
+  q.opts.forEach((opt,i)=>{
+    const btn = document.createElement('button');
+    btn.className='q-opt';
+    btn.setAttribute('data-letter',letters[i]);
+    btn.style.setProperty('color','inherit');
+    btn.textContent = opt.t;
+    btn.onclick=()=>{
+      document.querySelectorAll('.q-opt').forEach(b=>{
+        b.classList.remove('sel');
+        b.style.color='inherit';
+        b.style.borderColor='';
+      });
+      btn.classList.add('sel');
+      btn.style.color = cat.color;
+      btn.style.borderColor = cat.color;
+      scores.push(opt.s);
+      setTimeout(()=>{
+        qIndex++;
+        if(qIndex>=7){ showResults(); return; }
+        // transition
+        const shell = document.getElementById('sQ');
+        shell.style.opacity='0';
+        shell.style.transform='translateY(10px)';
+        setTimeout(()=>{
+          renderQ();
+          shell.style.transition='opacity .2s,transform .2s';
+          shell.style.opacity='1';
+          shell.style.transform='translateY(0)';
+          setTimeout(()=>{ shell.style.transition=''; },220);
+        },150);
+      },350);
+    };
+    opts.appendChild(btn);
+  });
+}
+
+function showResults(){
+  showScreen('sRes');
+  const avg = Math.round(scores.reduce((a,b)=>a+b,0)/scores.length);
+  const verdict = cat.verdicts.find(v=>avg>=v.min) || cat.verdicts[cat.verdicts.length-1];
+
+  // animate score
+  document.getElementById('scoreNum').style.color = cat.color;
+  document.getElementById('scoreBar').style.background = cat.color;
+  setTimeout(()=>{
+    document.getElementById('scoreBar').style.width = avg+'%';
+    let n=0;
+    const iv=setInterval(()=>{
+      n=Math.min(n+2,avg);
+      document.getElementById('scoreNum').textContent=n+'%';
+      if(n>=avg)clearInterval(iv);
+    },16);
+  },200);
+
+  document.getElementById('scoreVerdict').textContent = verdict.title;
+  document.getElementById('scoreSub').textContent = verdict.sub;
+
+  // breakdown
+  const bd = document.getElementById('ansBreakdown');
+  bd.innerHTML='';
+  cat.questions.forEach((q,i)=>{
+    const s = scores[i];
+    const label = s>=80?'Solid':s>=60?'Okay':s>=40?'Shaky':'Rough';
+    const col = s>=80?'#a0e63c':s>=60?'#f5d000':s>=40?'#ff8c00':'#ff4d4d';
+    const div=document.createElement('div');
+    div.className='ans-row';
+    div.innerHTML=`<span class="ans-q">${q.emoji} ${q.text}</span><span class="ans-score" style="color:${col}">${label}</span>`;
+    bd.appendChild(div);
+  });
+
+  // tips
+  const tl=document.getElementById('tipsList');
+  tl.innerHTML='';
+  cat.tips.forEach(tip=>{
+    const d=document.createElement('div');
+    d.className='tip-item';
+    d.style.color=cat.color+'aa';
+    d.innerHTML=`<span style="color:${cat.color}">→</span><span style="color:rgba(242,240,250,0.55)">${tip}</span>`;
+    tl.appendChild(d);
+  });
+}
+
+function copyResult(){
+  const score = document.getElementById('scoreNum').textContent;
+  const verdict = document.getElementById('scoreVerdict').textContent;
+  const text = `I just survived "${cat.name}" on How Cooked Are You\n\nSurvival score: ${score}\n"${verdict}"\n\ntry it: curious-crow.vercel.app/how-cooked`;
+  navigator.clipboard.writeText(text).then(()=>{
+    const t=document.getElementById('toast');
+    t.classList.add('show');
+    setTimeout(()=>t.classList.remove('show'),2200);
+  });
+}
+</script>
+</body>
+</html>

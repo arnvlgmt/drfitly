@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>The Last Letter — Curious Crow</title>
+<meta name="description" content="Write a letter to someone you can't talk to anymore."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet"/>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --paper: #f5edd8;
+  --paper-dark: #e8d9bb;
+  --ink: #2a1f14;
+  --ink-muted: #6b5440;
+  --bg: #0d0907;
+  --candle: rgba(255,160,40,0.12);
+  --ember: #e05020;
+}
+
+html, body {
+  min-height: 100%;
+  background: var(--bg);
+  font-family: 'DM Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ── ambient bg ── */
+.bg-glow {
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 40% at 50% 100%, rgba(180,80,20,0.1) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 30% at 50% 85%, rgba(255,140,30,0.06) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── candle flicker ── */
+.candle-wrap {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.55;
+}
+
+@keyframes flicker {
+  0%,100% { transform: translateX(-50%) scaleX(1) scaleY(1); opacity: 0.55; }
+  25%      { transform: translateX(-50%) scaleX(0.92) scaleY(1.06); opacity: 0.5; }
+  50%      { transform: translateX(-50%) scaleX(1.06) scaleY(0.94); opacity: 0.6; }
+  75%      { transform: translateX(-50%) scaleX(0.96) scaleY(1.04); opacity: 0.52; }
+}
+
+.candle-wrap { animation: flicker 3s ease-in-out infinite; }
+
+/* ── layout ── */
+.shell {
+  position: relative;
+  z-index: 2;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 48px 24px 120px;
+}
+
+.back {
+  align-self: flex-start;
+  font-size: 12px;
+  color: rgba(240,220,180,0.28);
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  margin-bottom: 44px;
+  transition: color 0.2s;
+}
+.back:hover { color: rgba(240,220,180,0.6); }
+
+/* ── intro ── */
+.intro {
+  text-align: center;
+  margin-bottom: 44px;
+  max-width: 480px;
+}
+
+.intro-eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,180,80,0.38);
+  margin-bottom: 14px;
+  font-weight: 400;
+}
+
+.intro-title {
+  font-family: 'IM Fell English', Georgia, serif;
+  font-style: italic;
+  font-size: clamp(28px, 5vw, 42px);
+  color: #f0dfc0;
+  line-height: 1.18;
+  margin-bottom: 16px;
+  font-weight: 400;
+}
+
+.intro-sub {
+  font-size: 14px;
+  font-weight: 300;
+  color: rgba(240,220,180,0.38);
+  line-height: 1.8;
+}
+
+/* ── paper ── */
+.paper-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 560px;
+  margin-bottom: 32px;
+}
+
+.paper {
+  background: var(--paper);
+  border-radius: 2px;
+  padding: 44px 48px 48px;
+  position: relative;
+  box-shadow:
+    0 2px 8px rgba(0,0,0,0.5),
+    0 20px 60px rgba(0,0,0,0.6),
+    inset 0 0 80px rgba(180,120,40,0.08);
+  overflow: hidden;
+}
+
+/* paper texture lines */
+.paper::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    transparent,
+    transparent 31px,
+    rgba(100,70,30,0.07) 31px,
+    rgba(100,70,30,0.07) 32px
+  );
+  background-position: 0 56px;
+  pointer-events: none;
+}
+
+/* left margin line */
+.paper::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  left: 72px;
+  width: 1px;
+  background: rgba(200,100,80,0.15);
+  pointer-events: none;
+}
+
+.paper-to {
+  font-family: 'IM Fell English', Georgia, serif;
+  font-size: 15px;
+  color: var(--ink-muted);
+  margin-bottom: 20px;
+  font-style: italic;
+  position: relative;
+  z-index: 1;
+}
+
+.to-input {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(100,70,30,0.2);
+  font-family: 'IM Fell English', Georgia, serif;
+  font-style: italic;
+  font-size: 15px;
+  color: var(--ink);
+  outline: none;
+  width: 200px;
+  padding: 2px 4px;
+  margin-left: 6px;
+}
+
+.to-input::placeholder { color: rgba(100,70,30,0.3); }
+
+.letter-body {
+  width: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  resize: none;
+  font-family: 'IM Fell English', Georgia, serif;
+  font-size: 17px;
+  line-height: 32px;
+  color: var(--ink);
+  min-height: 320px;
+  position: relative;
+  z-index: 1;
+  caret-color: var(--ember);
+}
+
+.letter-body::placeholder {
+  color: rgba(80,50,20,0.28);
+  font-style: italic;
+}
+
+.paper-date {
+  position: absolute;
+  top: 44px;
+  right: 48px;
+  font-family: 'IM Fell English', Georgia, serif;
+  font-style: italic;
+  font-size: 13px;
+  color: rgba(100,70,30,0.45);
+  z-index: 1;
+}
+
+/* fold crease effect */
+.crease {
+  position: absolute;
+  top: 33.33%;
+  left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(100,70,30,0.1), transparent);
+  pointer-events: none;
+}
+.crease2 {
+  position: absolute;
+  top: 66.66%;
+  left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(100,70,30,0.1), transparent);
+  pointer-events: none;
+}
+
+/* ── action row ── */
+.actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+  max-width: 560px;
+}
+
+.action-btn {
+  flex: 1;
+  min-width: 140px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 16px 20px;
+  border-radius: 12px;
+  border: 1px solid rgba(240,220,180,0.1);
+  background: rgba(240,220,180,0.04);
+  color: rgba(240,220,180,0.55);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 300;
+  cursor: pointer;
+  transition: all 0.22s ease;
+  letter-spacing: 0.03em;
+}
+
+.action-btn:hover:not(:disabled) {
+  border-color: rgba(240,220,180,0.25);
+  color: rgba(240,220,180,0.85);
+  background: rgba(240,220,180,0.07);
+}
+
+.action-btn:disabled { opacity: 0.22; cursor: not-allowed; }
+
+.action-btn .btn-icon { font-size: 20px; margin-bottom: 2px; }
+.action-btn.burn-btn .btn-icon { color: #e06030; }
+.action-btn.fold-btn .btn-icon { color: #c8a870; }
+.action-btn.send-btn .btn-icon { color: #8090c0; }
+
+.action-btn .btn-label { font-size: 14px; font-weight: 400; }
+.action-btn .btn-sub { font-size: 11px; color: rgba(240,220,180,0.3); }
+
+/* ── burn overlay ── */
+.burn-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: #0a0602;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.burn-overlay.active { opacity: 1; pointer-events: all; }
+
+#burnCanvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.burn-message {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 1s ease, transform 1s ease;
+  padding: 0 32px;
+}
+
+.burn-message.show { opacity: 1; transform: translateY(0); }
+
+.burn-msg-title {
+  font-family: 'IM Fell English', Georgia, serif;
+  font-style: italic;
+  font-size: clamp(26px, 4vw, 38px);
+  color: #f0dfc0;
+  line-height: 1.2;
+  margin-bottom: 14px;
+  font-weight: 400;
+}
+
+.burn-msg-sub {
+  font-size: 14px;
+  font-weight: 300;
+  color: rgba(240,220,180,0.42);
+  line-height: 1.8;
+  max-width: 380px;
+  margin: 0 auto 28px;
+}
+
+.reset-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: 1px solid rgba(240,220,180,0.15);
+  color: rgba(240,220,180,0.4);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  padding: 10px 24px;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.reset-btn:hover { border-color: rgba(240,220,180,0.32); color: rgba(240,220,180,0.75); }
+
+/* ── fold overlay ── */
+.fold-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: #0a0907;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+}
+
+.fold-overlay.active { opacity: 1; pointer-events: all; }
+
+.envelope-wrap {
+  position: relative;
+  width: 260px;
+  height: 180px;
+  margin-bottom: 36px;
+  transform: scale(0.8);
+  opacity: 0;
+  transition: transform 0.7s cubic-bezier(0.34,1.56,0.64,1) 0.2s, opacity 0.5s ease 0.2s;
+}
+
+.envelope-wrap.show { transform: scale(1); opacity: 1; }
+
+.fold-message {
+  text-align: center;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.8s ease 0.6s, transform 0.8s ease 0.6s;
+  padding: 0 32px;
+  max-width: 440px;
+}
+.fold-message.show { opacity: 1; transform: translateY(0); }
+
+.fold-msg-title {
+  font-family: 'IM Fell English', Georgia, serif;
+  font-style: italic;
+  font-size: clamp(24px, 4vw, 34px);
+  color: #f0dfc0;
+  margin-bottom: 12px;
+  font-weight: 400;
+}
+
+.fold-msg-sub {
+  font-size: 14px;
+  font-weight: 300;
+  color: rgba(240,220,180,0.4);
+  line-height: 1.8;
+  margin-bottom: 28px;
+}
+
+/* ── send overlay ── */
+.send-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: #08090f;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.send-overlay.active { opacity: 1; pointer-events: all; }
+
+#sendStars { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+
+.flying-envelope {
+  position: absolute;
+  left: 50%;
+  bottom: 28%;
+  transform: translateX(-50%);
+  z-index: 2;
+  width: 80px;
+  height: 56px;
+}
+
+.send-message {
+  position: relative;
+  z-index: 3;
+  text-align: center;
+  padding: 0 32px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 1s ease 0.2s, transform 1s ease 0.2s;
+  max-width: 460px;
+}
+.send-message.show { opacity: 1; transform: translateY(0); }
+
+.send-msg-title {
+  font-family: 'IM Fell English', Georgia, serif;
+  font-style: italic;
+  font-size: clamp(26px, 4vw, 38px);
+  color: #f0dfc0;
+  line-height: 1.2;
+  margin-bottom: 14px;
+  font-weight: 400;
+}
+.send-msg-title em { color: #8090d0; font-style: normal; }
+.send-msg-sub { font-size: 14px; font-weight: 300; color: rgba(240,220,180,0.4); line-height: 1.8; margin-bottom: 28px; }
+
+@media (max-width: 600px) {
+  .paper { padding: 32px 24px 36px; }
+  .paper::after { left: 0; }
+  .actions { flex-direction: column; }
+  .action-btn { flex: none; width: 100%; }
+}
+</style>
+</head>
+<body>
+
+<div class="bg-glow"></div>
+
+<!-- candle -->
+<div class="candle-wrap">
+  <svg width="40" height="120" viewBox="0 0 40 120" fill="none">
+    <rect x="16" y="50" width="8" height="70" rx="2" fill="#c8a050" opacity="0.4"/>
+    <ellipse cx="20" cy="50" rx="4" ry="2" fill="#b08040" opacity="0.5"/>
+    <line x1="20" y1="48" x2="20" y2="38" stroke="#604020" stroke-width="1" opacity="0.6"/>
+    <ellipse cx="20" cy="32" rx="6" ry="9" fill="#ff9020" opacity="0.6"/>
+    <ellipse cx="20" cy="28" rx="3" ry="6" fill="#fff0a0" opacity="0.5"/>
+  </svg>
+</div>
+
+<div class="shell">
+  <a class="back" href="index.html">← back to Curious Crow</a>
+
+  <div class="intro">
+    <p class="intro-eyebrow">A quiet space</p>
+    <h1 class="intro-title">Write a letter to someone<br/>you can't talk to anymore.</h1>
+    <p class="intro-sub">It doesn't matter who. Someone who left. Someone you lost. Someone you were. Just write — and then decide what happens to it.</p>
+  </div>
+
+  <div class="paper-wrap">
+    <div class="paper" id="thePaper">
+      <div class="crease"></div>
+      <div class="crease2"></div>
+      <span class="paper-date" id="paperDate"></span>
+
+      <div class="paper-to">
+        Dear <input class="to-input" id="toInput" placeholder="their name" maxlength="40"/>
+      </div>
+
+      <textarea class="letter-body" id="letterBody"
+        placeholder="Start writing... there are no rules here. Say what you never got to say."
+        rows="14"></textarea>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button class="action-btn burn-btn" id="burnBtn" disabled onclick="startBurn()">
+      <span class="btn-icon">🔥</span>
+      <span class="btn-label">Burn it</span>
+      <span class="btn-sub">let it go forever</span>
+    </button>
+    <button class="action-btn fold-btn" id="foldBtn" disabled onclick="startFold()">
+      <span class="btn-icon">✉</span>
+      <span class="btn-label">Fold & keep it</span>
+      <span class="btn-sub">saved in this browser</span>
+    </button>
+    <button class="action-btn send-btn" id="sendBtn" disabled onclick="startSend()">
+      <span class="btn-icon">✦</span>
+      <span class="btn-label">Send to the universe</span>
+      <span class="btn-sub">release it to the sky</span>
+    </button>
+  </div>
+</div>
+
+<!-- ── BURN OVERLAY ── -->
+<div class="burn-overlay" id="burnOverlay">
+  <canvas id="burnCanvas"></canvas>
+  <div class="burn-message" id="burnMessage">
+    <p class="burn-msg-title">It's gone now.<br/>And that's okay.</p>
+    <p class="burn-msg-sub">Some things only need to be written, not kept. The words existed. They were real. That was enough.</p>
+    <button class="reset-btn" onclick="resetAll()">Write another letter</button>
+  </div>
+</div>
+
+<!-- ── FOLD OVERLAY ── -->
+<div class="fold-overlay" id="foldOverlay">
+  <div class="envelope-wrap" id="envelopeWrap">
+    <svg width="260" height="180" viewBox="0 0 260 180" fill="none">
+      <rect x="2" y="2" width="256" height="176" rx="6" fill="#e8d9bb" stroke="#c8a870" stroke-width="1"/>
+      <path d="M2 2 L130 100 L258 2" stroke="#c8a870" stroke-width="1" fill="none"/>
+      <path d="M2 178 L90 90" stroke="#c8a870" stroke-width="0.8" fill="none" opacity="0.5"/>
+      <path d="M258 178 L170 90" stroke="#c8a870" stroke-width="0.8" fill="none" opacity="0.5"/>
+      <ellipse cx="130" cy="100" rx="12" ry="8" fill="#c05030" opacity="0.85"/>
+      <text x="130" y="104" text-anchor="middle" font-size="10" fill="#f0dfc0" font-family="serif">✦</text>
+    </svg>
+  </div>
+  <div class="fold-message" id="foldMessage">
+    <p class="fold-msg-title">Sealed and kept.</p>
+    <p class="fold-msg-sub">Your letter is saved in this browser. Come back whenever you need to. It will be here — waiting quietly, the way letters do.</p>
+    <button class="reset-btn" onclick="resetAll()">Write another letter</button>
+  </div>
+</div>
+
+<!-- ── SEND OVERLAY ── -->
+<div class="send-overlay" id="sendOverlay">
+  <canvas id="sendStars"></canvas>
+  <svg class="flying-envelope" id="flyingEnv" viewBox="0 0 80 56" fill="none">
+    <rect x="1" y="1" width="78" height="54" rx="4" fill="#e8d9bb" stroke="#c8a870" stroke-width="0.8"/>
+    <path d="M1 1 L40 30 L79 1" stroke="#c8a870" stroke-width="0.8" fill="none"/>
+    <path d="M1 55 L28 28" stroke="#c8a870" stroke-width="0.6" fill="none" opacity="0.4"/>
+    <path d="M79 55 L52 28" stroke="#c8a870" stroke-width="0.6" fill="none" opacity="0.4"/>
+  </svg>
+  <div class="send-message" id="sendMessage">
+    <p class="send-msg-title">On its way to<br/>the <em>universe</em></p>
+    <p class="send-msg-sub">Somewhere between here and everywhere, they might just feel it. Some things travel further than words.</p>
+    <button class="reset-btn" onclick="resetAll()">Write another letter</button>
+  </div>
+</div>
+
+<script>
+const letterBody = document.getElementById('letterBody');
+const burnBtn = document.getElementById('burnBtn');
+const foldBtn = document.getElementById('foldBtn');
+const sendBtn = document.getElementById('sendBtn');
+
+// set today's date on paper
+const now = new Date();
+document.getElementById('paperDate').textContent =
+  now.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+
+// enable buttons when letter has content
+letterBody.addEventListener('input', () => {
+  const has = letterBody.value.trim().length > 5;
+  burnBtn.disabled = !has;
+  foldBtn.disabled = !has;
+  sendBtn.disabled = !has;
+});
+
+// load saved letter if exists
+const saved = localStorage.getItem('lastLetter');
+if (saved) {
+  try {
+    const d = JSON.parse(saved);
+    if (d.to) document.getElementById('toInput').value = d.to;
+    if (d.body) { letterBody.value = d.body; letterBody.dispatchEvent(new Event('input')); }
+  } catch(e) {}
+}
+
+// auto-save as user types
+letterBody.addEventListener('input', saveDraft);
+document.getElementById('toInput').addEventListener('input', saveDraft);
+
+function saveDraft() {
+  localStorage.setItem('lastLetter', JSON.stringify({
+    to: document.getElementById('toInput').value,
+    body: letterBody.value
+  }));
+}
+
+// ── BURN ──
+function startBurn() {
+  const overlay = document.getElementById('burnOverlay');
+  overlay.classList.add('active');
+  // Small delay so overlay is visible before we start
+  setTimeout(runBurnAnimation, 80);
+}
+
+function runBurnAnimation() {
+  const canvas = document.getElementById('burnCanvas');
+  const W = window.innerWidth;
+  const H = window.innerHeight;
+  canvas.width = W;
+  canvas.height = H;
+  const ctx = canvas.getContext('2d');
+
+  // ── Step 1: render the paper + letter onto an offscreen canvas ──
+  const paper = document.getElementById('thePaper');
+  const toVal = document.getElementById('toInput').value || 'you';
+  const bodyVal = document.getElementById('letterBody').value || '';
+  const dateVal = document.getElementById('paperDate').textContent;
+
+  // Paper dimensions — centred, realistic proportions
+  const PW = Math.min(W * 0.82, 560);
+  const PH = Math.min(H * 0.80, 720);
+  const PX = (W - PW) / 2;
+  const PY = (H - PH) / 2;
+
+  // Draw the full paper onto main canvas first
+  function drawPaperSnapshot(targetCtx) {
+    // Paper background with slight shadow
+    targetCtx.save();
+    targetCtx.shadowColor = 'rgba(0,0,0,0.55)';
+    targetCtx.shadowBlur = 40;
+    targetCtx.shadowOffsetY = 8;
+    targetCtx.fillStyle = '#f5edd8';
+    targetCtx.fillRect(PX, PY, PW, PH);
+    targetCtx.restore();
+
+    // Paper texture — ruled lines
+    targetCtx.save();
+    targetCtx.globalAlpha = 0.06;
+    for (let ly = PY + 56; ly < PY + PH; ly += 32) {
+      targetCtx.fillStyle = '#7a5030';
+      targetCtx.fillRect(PX, ly, PW, 1);
+    }
+    // Margin line
+    targetCtx.globalAlpha = 0.12;
+    targetCtx.fillStyle = '#c05030';
+    targetCtx.fillRect(PX + 64, PY, 1, PH);
+    targetCtx.restore();
+
+    // Date top right
+    targetCtx.save();
+    targetCtx.font = 'italic 13px "IM Fell English", Georgia, serif';
+    targetCtx.fillStyle = 'rgba(100,70,30,0.45)';
+    targetCtx.textAlign = 'right';
+    targetCtx.fillText(dateVal, PX + PW - 44, PY + 48);
+    targetCtx.restore();
+
+    // "Dear [name]"
+    targetCtx.save();
+    targetCtx.font = 'italic 15px "IM Fell English", Georgia, serif';
+    targetCtx.fillStyle = '#6b5440';
+    targetCtx.textAlign = 'left';
+    targetCtx.fillText('Dear ' + toVal + ',', PX + 80, PY + 72);
+    targetCtx.restore();
+
+    // Letter body — wrap text manually
+    const textX = PX + 80;
+    const textY = PY + 110;
+    const maxW = PW - 100;
+    const lineH = 32;
+    targetCtx.save();
+    targetCtx.font = '17px "IM Fell English", Georgia, serif';
+    targetCtx.fillStyle = '#2a1f14';
+    targetCtx.textAlign = 'left';
+
+    const words = bodyVal.split(' ');
+    let line = '';
+    let y = textY;
+    for (let n = 0; n < words.length; n++) {
+      const testLine = line + words[n] + ' ';
+      const metrics = targetCtx.measureText(testLine);
+      if (metrics.width > maxW && n > 0) {
+        targetCtx.fillText(line, textX, y);
+        line = words[n] + ' ';
+        y += lineH;
+        if (y > PY + PH - 40) break;
+      } else {
+        line = testLine;
+      }
+    }
+    targetCtx.fillText(line, textX, y);
+    targetCtx.restore();
+  }
+
+  // ── Step 2: cellular automaton burn grid ──
+  const CELL = 3;
+  const COLS = Math.ceil(PW / CELL);
+  const ROWS = Math.ceil(PH / CELL);
+  const TOTAL = COLS * ROWS;
+
+  // States: 0=paper, 1=browning(pre-burn), 2=burning, 3=char, 4=ash, 5=gone
+  const state = new Uint8Array(TOTAL);
+  const heat  = new Float32Array(TOTAL);
+  const noise = new Float32Array(TOTAL); // per-cell random for organic edge
+
+  function idx(c, r) { return r * COLS + c; }
+
+  // Pre-fill noise
+  for (let i = 0; i < TOTAL; i++) noise[i] = Math.random();
+
+  // Ignite bottom-left corner (more natural — candle at bottom)
+  const startC = 2, startR = ROWS - 1;
+  for (let dr = 0; dr <= 3; dr++) {
+    for (let dc = 0; dc <= 3; dc++) {
+      const c = startC + dc, r = startR - dr;
+      if (c < COLS && r >= 0) {
+        state[idx(c, r)] = 2;
+        heat[idx(c, r)] = 0.6 + Math.random() * 0.4;
+      }
+    }
+  }
+
+  const embers = [];
+  function spawnEmber(x, y, intensity) {
+    const count = Math.floor(intensity * 2) + 1;
+    for (let i = 0; i < count; i++) {
+      embers.push({
+        x: x + (Math.random() - 0.5) * 6,
+        y,
+        vx: (Math.random() - 0.5) * 1.6,
+        vy: -(Math.random() * 3 + 1.2),
+        life: 0.7 + Math.random() * 0.3,
+        decay: Math.random() * 0.01 + 0.005,
+        size: Math.random() * 2 + 0.6,
+        hue: Math.random() * 20 + 5,
+        bright: Math.random() * 40 + 55
+      });
+    }
+  }
+
+  // Perlin-like smooth noise for jagged edge
+  function smoothNoise(c, r) {
+    const scale = 0.12;
+    const x = c * scale, y = r * scale;
+    const xi = Math.floor(x), yi = Math.floor(y);
+    const xf = x - xi, yf = y - yi;
+    const n00 = noise[idx(Math.min(xi, COLS-1), Math.min(yi, ROWS-1))];
+    const n10 = noise[idx(Math.min(xi+1, COLS-1), Math.min(yi, ROWS-1))];
+    const n01 = noise[idx(Math.min(xi, COLS-1), Math.min(yi+1, ROWS-1))];
+    const n11 = noise[idx(Math.min(xi+1, COLS-1), Math.min(yi+1, ROWS-1))];
+    const lx0 = n00 + xf * (n10 - n00);
+    const lx1 = n01 + xf * (n11 - n01);
+    return lx0 + yf * (lx1 - lx0);
+  }
+
+  let totalGone = 0;
+  let animDone = false;
+  let messageShown = false;
+
+  function step() {
+    const toChange = [];
+
+    for (let r = 0; r < ROWS; r++) {
+      for (let c = 0; c < COLS; c++) {
+        const i = idx(c, r);
+        const s = state[i];
+
+        if (s === 1) {
+          // Pre-browning → ignite faster
+          heat[i] += 0.09 + noise[i] * 0.04;
+          if (heat[i] > 0.4 + noise[i] * 0.15) toChange.push([i, 2, heat[i]]);
+        }
+
+        if (s === 2) {
+          // Burning — spread to neighbours
+          heat[i] = Math.min(1, heat[i] + 0.055 + noise[i] * 0.025);
+
+          // Neighbour spread — faster rates
+          const dirs = [
+            [c-1, r,   0.09],  [c+1, r,   0.09],
+            [c,   r-1, 0.16],  // up — fire rises fastest
+            [c-1, r-1, 0.11],  [c+1, r-1, 0.11],
+            [c,   r+1, 0.035], // down — slowest
+            [c-1, r+1, 0.028], [c+1, r+1, 0.028],
+          ];
+
+          dirs.forEach(([nc, nr, base]) => {
+            if (nc < 0 || nc >= COLS || nr < 0 || nr >= ROWS) return;
+            const ni = idx(nc, nr);
+            if (state[ni] === 0) {
+              const chance = base * (0.7 + smoothNoise(nc, nr) * 0.7);
+              if (Math.random() < chance) toChange.push([ni, 1, 0.2 + noise[ni] * 0.25]);
+            }
+          });
+
+          // Burning → char
+          if (heat[i] > 0.78 + noise[i] * 0.12) toChange.push([i, 3, heat[i]]);
+
+          // Spawn embers at burn edge
+          const wx = PX + c * CELL, wy = PY + r * CELL;
+          if (Math.random() < 0.028) spawnEmber(wx, wy, heat[i]);
+        }
+
+        if (s === 3) {
+          // Char — cooling faster
+          heat[i] = Math.max(0, heat[i] - 0.014);
+          if (heat[i] < 0.2 && Math.random() < 0.018) toChange.push([i, 4, 0]);
+        }
+
+        if (s === 4) {
+          // Ash — crumbles faster
+          if (Math.random() < 0.008) toChange.push([i, 5, 0]);
+        }
+      }
+    }
+
+    toChange.forEach(([i, newState, newHeat]) => {
+      if (newState > state[i]) {
+        state[i] = newState;
+        if (newHeat > 0) heat[i] = newHeat;
+        if (newState === 5) totalGone++;
+      }
+    });
+  }
+
+  function render() {
+    // Dark background
+    ctx.fillStyle = '#0d0907';
+    ctx.fillRect(0, 0, W, H);
+
+    // Draw the paper snapshot (text + lines + etc.)
+    drawPaperSnapshot(ctx);
+
+    // Now paint burn states on top — cell by cell
+    for (let r = 0; r < ROWS; r++) {
+      for (let c = 0; c < COLS; c++) {
+        const i = idx(c, r);
+        const s = state[i];
+        const h = heat[i];
+        const x = PX + c * CELL;
+        const y = PY + r * CELL;
+
+        if (s === 0) continue; // untouched paper — already drawn
+
+        if (s === 1) {
+          // Pre-browning — warm discolouration before flame
+          const t = h * 2;
+          const r1 = Math.round(245 - t * 60);
+          const g1 = Math.round(237 - t * 90);
+          const b1 = Math.round(216 - t * 120);
+          ctx.fillStyle = `rgb(${r1},${g1},${b1})`;
+          ctx.fillRect(x, y, CELL, CELL);
+        }
+
+        else if (s === 2) {
+          // Active burning — paint over paper with fire colour
+          const flicker = 0.75 + Math.random() * 0.25;
+          const intensity = h * flicker;
+
+          // Base char colour underneath flame
+          ctx.fillStyle = `rgb(${Math.round(30 + h * 20)},${Math.round(10 + h * 8)},0)`;
+          ctx.fillRect(x, y, CELL, CELL);
+
+          // Flame colour — layered: outer red → middle orange → inner yellow-white
+          ctx.save();
+          ctx.globalAlpha = intensity * 0.9;
+          ctx.fillStyle = `rgb(220,${Math.round(40 + intensity * 40)},0)`;
+          ctx.fillRect(x, y, CELL, CELL);
+          ctx.globalAlpha = intensity * 0.55;
+          ctx.fillStyle = `rgb(255,${Math.round(120 + intensity * 80)},${Math.round(intensity * 40)})`;
+          ctx.fillRect(x + 0.5, y + 0.5, CELL - 1, CELL - 1);
+          // Hot core — white-yellow
+          if (intensity > 0.7) {
+            ctx.globalAlpha = (intensity - 0.7) * 0.8;
+            ctx.fillStyle = `rgb(255,240,${Math.round(intensity * 180)})`;
+            ctx.fillRect(x + 1, y + 1, CELL - 2, CELL - 2);
+          }
+          ctx.restore();
+        }
+
+        else if (s === 3) {
+          // Char — dark brown → black, with glowing orange veins while hot
+          const darkness = 1 - h * 0.7;
+          ctx.fillStyle = `rgb(${Math.round(45 * (1-darkness))},${Math.round(18 * (1-darkness))},0)`;
+          ctx.fillRect(x, y, CELL, CELL);
+
+          // Glowing ember veins in fresh char
+          if (h > 0.35 && Math.random() < 0.25) {
+            ctx.save();
+            ctx.globalAlpha = (h - 0.35) * 0.5;
+            ctx.fillStyle = `rgb(${Math.round(180 + h * 60)},${Math.round(h * 50)},0)`;
+            ctx.fillRect(x, y, CELL, CELL);
+            ctx.restore();
+          }
+        }
+
+        else if (s === 4) {
+          // Ash — near transparent grey skeleton
+          ctx.save();
+          ctx.globalAlpha = 0.35 + Math.random() * 0.1;
+          ctx.fillStyle = `rgb(${Math.round(40 + noise[i] * 25)},${Math.round(35 + noise[i] * 20)},${Math.round(30 + noise[i] * 15)})`;
+          ctx.fillRect(x, y, CELL, CELL);
+          ctx.restore();
+        }
+
+        else if (s === 5) {
+          // Gone — just dark bg, paper hole
+          ctx.fillStyle = '#0d0907';
+          ctx.fillRect(x, y, CELL, CELL);
+        }
+      }
+    }
+
+    // Embers
+    for (let i = embers.length - 1; i >= 0; i--) {
+      const e = embers[i];
+      e.x += e.vx + (Math.random() - 0.5) * 0.25;
+      e.y += e.vy;
+      e.vy += 0.035;
+      e.vx *= 0.985;
+      e.life -= e.decay;
+      if (e.life <= 0) { embers.splice(i, 1); continue; }
+
+      ctx.save();
+      ctx.globalAlpha = e.life;
+      const g = ctx.createRadialGradient(e.x, e.y, 0, e.x, e.y, e.size * 2.5);
+      g.addColorStop(0, `hsl(${e.hue + 40},100%,${e.bright + 20}%)`);
+      g.addColorStop(0.5, `hsl(${e.hue},100%,${e.bright}%)`);
+      g.addColorStop(1, 'rgba(255,30,0,0)');
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.arc(e.x, e.y, e.size * 2.5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    // Completion check
+    if (totalGone / TOTAL > 0.92 && !animDone) animDone = true;
+
+    if (animDone && !messageShown && embers.length < 8) {
+      messageShown = true;
+      let alpha = 0;
+      const fade = setInterval(() => {
+        alpha = Math.min(1, alpha + 0.018);
+        ctx.fillStyle = `rgba(13,9,7,${alpha})`;
+        ctx.fillRect(0, 0, W, H);
+        if (alpha >= 1) {
+          clearInterval(fade);
+          setTimeout(() => document.getElementById('burnMessage').classList.add('show'), 400);
+        }
+      }, 16);
+      return;
+    }
+
+    requestAnimationFrame(() => { step(); render(); });
+  }
+
+  requestAnimationFrame(() => { step(); render(); });
+}
+
+// ── FOLD ──
+function startFold() {
+  const overlay = document.getElementById('foldOverlay');
+  overlay.classList.add('active');
+  setTimeout(() => {
+    document.getElementById('envelopeWrap').classList.add('show');
+    document.getElementById('foldMessage').classList.add('show');
+  }, 100);
+  // keep saved in localStorage (already auto-saved)
+}
+
+// ── SEND ──
+function drawSendStars() {
+  const c = document.getElementById('sendStars');
+  c.width = window.innerWidth; c.height = window.innerHeight;
+  const ctx = c.getContext('2d');
+  for (let i = 0; i < 280; i++) {
+    const x = Math.random() * c.width;
+    const y = Math.random() * c.height;
+    const r = Math.random() * 1.2;
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(220,210,255,${Math.random() * 0.6 + 0.1})`;
+    ctx.fill();
+  }
+}
+
+function startSend() {
+  const overlay = document.getElementById('sendOverlay');
+  overlay.classList.add('active');
+  drawSendStars();
+
+  const env = document.getElementById('flyingEnv');
+  env.style.bottom = '28%';
+  env.style.opacity = '1';
+  env.style.transform = 'translateX(-50%)';
+
+  let startTime = null;
+  const duration = 3600;
+
+  function animate(ts) {
+    if (!startTime) startTime = ts;
+    const progress = Math.min((ts - startTime) / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 2);
+    const bottom = 28 + eased * 72;
+    const scale = 1 - eased * 0.6;
+    const opacity = progress < 0.65 ? 1 : 1 - ((progress - 0.65) / 0.35);
+    const drift = Math.sin(progress * Math.PI * 3) * 22;
+    env.style.bottom = bottom + '%';
+    env.style.transform = `translateX(calc(-50% + ${drift}px)) scale(${scale})`;
+    env.style.opacity = opacity;
+    if (progress < 1) { requestAnimationFrame(animate); }
+    else {
+      env.style.opacity = '0';
+      setTimeout(() => document.getElementById('sendMessage').classList.add('show'), 200);
+    }
+  }
+  requestAnimationFrame(animate);
+}
+
+// ── RESET ──
+function resetAll() {
+  document.getElementById('burnOverlay').classList.remove('active');
+  document.getElementById('foldOverlay').classList.remove('active');
+  document.getElementById('sendOverlay').classList.remove('active');
+  document.getElementById('burnMessage').classList.remove('show');
+  document.getElementById('envelopeWrap').classList.remove('show');
+  document.getElementById('foldMessage').classList.remove('show');
+  document.getElementById('sendMessage').classList.remove('show');
+  document.getElementById('flyingEnv').style.opacity = '1';
+  letterBody.value = '';
+  document.getElementById('toInput').value = '';
+  burnBtn.disabled = true;
+  foldBtn.disabled = true;
+  sendBtn.disabled = true;
+  localStorage.removeItem('lastLetter');
+}
+</script>
+</body>
+</html>

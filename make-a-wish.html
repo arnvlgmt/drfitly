@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Make a Wish — Curious Crow</title>
+<meta name="description" content="Write your wish, release a lantern, and let the universe meet you halfway."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  min-height: 100%;
+  background: #080b14;
+  color: #f0ede8;
+  font-family: 'DM Sans', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+#starCanvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.wrap {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 52px 24px 80px;
+  min-height: 100vh;
+}
+
+/* ── back link ── */
+.back {
+  align-self: flex-start;
+  font-size: 13px;
+  font-weight: 400;
+  color: rgba(240,237,232,0.35);
+  text-decoration: none;
+  letter-spacing: 0.03em;
+  margin-bottom: 40px;
+  transition: color 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.back:hover { color: rgba(240,237,232,0.7); }
+
+/* ── myth section ── */
+.myth {
+  max-width: 520px;
+  text-align: center;
+  margin-bottom: 56px;
+}
+
+.myth-eyebrow {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,210,100,0.5);
+  margin-bottom: 16px;
+}
+
+.myth-title {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-style: italic;
+  font-size: clamp(24px, 4vw, 32px);
+  font-weight: 400;
+  color: #f0ede8;
+  line-height: 1.22;
+  margin-bottom: 18px;
+}
+
+.myth-body {
+  font-size: 14px;
+  font-weight: 300;
+  color: rgba(240,237,232,0.48);
+  line-height: 1.8;
+  max-width: 440px;
+  margin: 0 auto;
+}
+
+.myth-divider {
+  width: 36px;
+  height: 1px;
+  background: rgba(255,210,100,0.22);
+  margin: 22px auto 0;
+}
+
+/* ── lantern ── */
+.lantern-wrap {
+  position: relative;
+  width: 130px;
+  height: 172px;
+  margin-bottom: 36px;
+}
+
+.glow-ring {
+  position: absolute;
+  inset: -24px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,180,50,0.16) 0%, transparent 70%);
+  animation: pulse-glow 2.6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.55; transform: scale(1); }
+  50%       { opacity: 1;    transform: scale(1.12); }
+}
+
+/* ── wish form ── */
+.wish-area {
+  width: 100%;
+  max-width: 520px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.wish-label {
+  font-size: 13px;
+  font-weight: 300;
+  color: rgba(240,237,232,0.38);
+  letter-spacing: 0.04em;
+  text-align: center;
+}
+
+.wish-input {
+  width: 100%;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,210,100,0.18);
+  border-radius: 16px;
+  padding: 20px 24px;
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-style: italic;
+  font-size: 20px;
+  color: #f5ead0;
+  caret-color: #ffc84a;
+  outline: none;
+  resize: none;
+  line-height: 1.65;
+  transition: border-color 0.2s ease, background 0.2s ease;
+  min-height: 110px;
+}
+
+.wish-input::placeholder {
+  color: rgba(240,237,232,0.22);
+  font-style: italic;
+}
+
+.wish-input:focus {
+  border-color: rgba(255,210,100,0.4);
+  background: rgba(255,255,255,0.07);
+  color: #fff8ee;
+}
+
+.char-count {
+  font-size: 12px;
+  color: rgba(240,237,232,0.22);
+  align-self: flex-end;
+  margin-top: -6px;
+}
+
+.release-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255,180,50,0.1);
+  border: 1px solid rgba(255,180,50,0.32);
+  color: rgba(255,220,120,0.88);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  padding: 14px 32px;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  letter-spacing: 0.04em;
+  margin-top: 6px;
+}
+
+.release-btn:hover:not(:disabled) {
+  background: rgba(255,180,50,0.2);
+  border-color: rgba(255,180,50,0.58);
+  color: #ffd88a;
+}
+
+.release-btn:disabled {
+  opacity: 0.28;
+  cursor: not-allowed;
+}
+
+/* ── fly stage ── */
+.fly-stage {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #080b14;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.55s ease;
+}
+
+.fly-stage.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+#flyStars {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.flying-lantern {
+  position: absolute;
+  left: 50%;
+  bottom: 30%;
+  transform: translateX(-50%);
+  width: 86px;
+  height: 116px;
+  z-index: 2;
+}
+
+.message-wrap {
+  position: relative;
+  z-index: 3;
+  text-align: center;
+  padding: 0 32px;
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 1s ease 0.2s, transform 1s ease 0.2s;
+  max-width: 500px;
+}
+
+.message-wrap.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.message-title {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-style: italic;
+  font-size: clamp(28px, 5vw, 44px);
+  font-weight: 400;
+  color: #f0ede8;
+  line-height: 1.18;
+  margin-bottom: 20px;
+}
+
+.message-title em {
+  color: #ffc84a;
+  font-style: normal;
+}
+
+.wish-echo {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-style: italic;
+  font-size: 17px;
+  color: rgba(255,200,74,0.72);
+  margin-bottom: 24px;
+  padding: 16px 24px;
+  border: 1px solid rgba(255,180,50,0.14);
+  border-radius: 14px;
+  background: rgba(255,180,50,0.05);
+  line-height: 1.65;
+}
+
+.message-sub {
+  font-size: 14px;
+  font-weight: 300;
+  color: rgba(240,237,232,0.45);
+  line-height: 1.78;
+  margin-bottom: 36px;
+}
+
+.again-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: 1px solid rgba(240,237,232,0.14);
+  color: rgba(240,237,232,0.45);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  padding: 10px 26px;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  letter-spacing: 0.03em;
+}
+
+.again-btn:hover {
+  border-color: rgba(240,237,232,0.32);
+  color: rgba(240,237,232,0.8);
+}
+
+@media (max-width: 600px) {
+  .wrap { padding: 36px 16px 60px; }
+  .wish-input { font-size: 18px; }
+}
+</style>
+</head>
+<body>
+
+<canvas id="starCanvas"></canvas>
+
+<div class="wrap">
+
+  <a class="back" href="index.html">← back to Curious Crow</a>
+
+  <div class="myth">
+    <p class="myth-eyebrow">An ancient belief</p>
+    <h1 class="myth-title">Your wish is a contract<br/>with the universe</h1>
+    <p class="myth-body">Across cultures — from the sky lantern festivals of Thailand and Taiwan to the floating diyas of Diwali — lighting a flame and releasing it upward has always been an act of surrender and intention. The flame is your desire. The act of letting go signals to the universe that you are ready to receive. But ancient wisdom adds one condition: a wish written consciously is not a passive prayer. It is a declaration of willingness. You are not asking for something to happen to you. You are announcing that you are ready to make it happen — and inviting the universe to meet you halfway.</p>
+    <div class="myth-divider"></div>
+  </div>
+
+  <div class="lantern-wrap">
+    <div class="glow-ring"></div>
+    <svg width="130" height="172" viewBox="0 0 120 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="bodyGrad" cx="50%" cy="40%" r="55%">
+          <stop offset="0%" stop-color="#ffe8a0"/>
+          <stop offset="100%" stop-color="#e8940a"/>
+        </radialGradient>
+        <radialGradient id="glowGrad" cx="50%" cy="60%" r="50%">
+          <stop offset="0%" stop-color="#ffdd55" stop-opacity="0.35"/>
+          <stop offset="100%" stop-color="#ff8800" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <ellipse cx="60" cy="128" rx="44" ry="6" fill="rgba(255,180,50,0.1)"/>
+      <path d="M30 48 Q18 78 20 108 Q22 132 60 136 Q98 132 100 108 Q102 78 90 48 Z" fill="url(#bodyGrad)" opacity="0.92"/>
+      <path d="M30 48 Q18 78 20 108 Q22 132 60 136 Q98 132 100 108 Q102 78 90 48 Z" fill="url(#glowGrad)"/>
+      <path d="M32 70 Q60 62 88 70" stroke="rgba(180,100,0,0.28)" stroke-width="1" fill="none"/>
+      <path d="M22 95 Q60 86 98 95" stroke="rgba(180,100,0,0.28)" stroke-width="1" fill="none"/>
+      <path d="M22 115 Q60 108 98 115" stroke="rgba(180,100,0,0.22)" stroke-width="1" fill="none"/>
+      <path d="M60 48 L44 28 L76 28 Z" fill="#c87800" opacity="0.8"/>
+      <rect x="44" y="24" width="32" height="6" rx="3" fill="#a06000" opacity="0.9"/>
+      <path d="M52 12 Q58 4 60 0 Q62 4 68 12 Q64 10 60 14 Q56 10 52 12 Z" fill="#ffaa00" opacity="0.9"/>
+      <ellipse cx="60" cy="14" rx="5" ry="7" fill="#fff5a0" opacity="0.7"/>
+      <rect x="50" y="28" width="20" height="20" rx="3" fill="rgba(255,255,200,0.16)"/>
+      <line x1="60" y1="28" x2="60" y2="48" stroke="rgba(180,100,0,0.22)" stroke-width="1"/>
+      <line x1="50" y1="38" x2="70" y2="38" stroke="rgba(180,100,0,0.22)" stroke-width="1"/>
+      <line x1="44" y1="136" x2="36" y2="150" stroke="#a06000" stroke-width="1.5" opacity="0.65"/>
+      <line x1="76" y1="136" x2="84" y2="150" stroke="#a06000" stroke-width="1.5" opacity="0.65"/>
+      <line x1="36" y1="150" x2="84" y2="150" stroke="#a06000" stroke-width="1.5" opacity="0.65"/>
+      <ellipse cx="60" cy="150" rx="24" ry="3" fill="rgba(160,96,0,0.25)"/>
+    </svg>
+  </div>
+
+  <div class="wish-area">
+    <p class="wish-label">write your wish below — then release it to the sky</p>
+    <textarea class="wish-input" id="wishInput" placeholder="I wish to..." maxlength="200" rows="4"></textarea>
+    <span class="char-count" id="charCount">0 / 200</span>
+    <button class="release-btn" id="releaseBtn" disabled>
+      Release the lantern ✦
+    </button>
+  </div>
+
+</div>
+
+<!-- fly stage -->
+<div class="fly-stage" id="flyStage">
+  <canvas id="flyStars"></canvas>
+
+  <svg class="flying-lantern" id="flyingLantern" viewBox="0 0 80 108" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="bg2" cx="50%" cy="40%" r="55%">
+        <stop offset="0%" stop-color="#ffe8a0"/>
+        <stop offset="100%" stop-color="#e8940a"/>
+      </radialGradient>
+    </defs>
+    <path d="M18 30 Q10 52 12 74 Q14 90 40 92 Q66 90 68 74 Q70 52 62 30 Z" fill="url(#bg2)" opacity="0.95"/>
+    <path d="M28 48 Q40 43 52 48" stroke="rgba(180,100,0,0.28)" stroke-width="0.8" fill="none"/>
+    <path d="M13 63 Q40 57 67 63" stroke="rgba(180,100,0,0.28)" stroke-width="0.8" fill="none"/>
+    <path d="M40 30 L30 18 L50 18 Z" fill="#c87800" opacity="0.8"/>
+    <rect x="30" y="15" width="20" height="4" rx="2" fill="#a06000" opacity="0.9"/>
+    <path d="M34 8 Q39 2 40 0 Q41 2 46 8 Q43 7 40 10 Q37 7 34 8 Z" fill="#ffaa00" opacity="0.95"/>
+    <ellipse cx="40" cy="9" rx="3.5" ry="5" fill="#fff5a0" opacity="0.75"/>
+    <line x1="28" y1="92" x2="22" y2="102" stroke="#a06000" stroke-width="1.2" opacity="0.65"/>
+    <line x1="52" y1="92" x2="58" y2="102" stroke="#a06000" stroke-width="1.2" opacity="0.65"/>
+    <line x1="22" y1="102" x2="58" y2="102" stroke="#a06000" stroke-width="1.2" opacity="0.65"/>
+  </svg>
+
+  <div class="message-wrap" id="messageWrap">
+    <p class="message-title">Your wish is on its way<br/>to the <em>universe</em></p>
+    <div class="wish-echo" id="wishEcho"></div>
+    <p class="message-sub">You've done your part. You put it into words — and that took courage.<br/>The universe heard you. Now trust the journey.</p>
+    <button class="again-btn" onclick="resetWish()">✦ &nbsp;Make another wish</button>
+  </div>
+</div>
+
+<script>
+const wishInput = document.getElementById('wishInput');
+const releaseBtn = document.getElementById('releaseBtn');
+const charCount = document.getElementById('charCount');
+const flyStage = document.getElementById('flyStage');
+const flyingLantern = document.getElementById('flyingLantern');
+const messageWrap = document.getElementById('messageWrap');
+const wishEcho = document.getElementById('wishEcho');
+
+function drawStars(canvasId) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  for (let i = 0; i < 260; i++) {
+    const x = Math.random() * canvas.width;
+    const y = Math.random() * canvas.height;
+    const r = Math.random() * 1.3;
+    const a = Math.random() * 0.7 + 0.1;
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(255,245,220,${a})`;
+    ctx.fill();
+  }
+}
+
+drawStars('starCanvas');
+window.addEventListener('resize', () => { drawStars('starCanvas'); drawStars('flyStars'); });
+
+wishInput.addEventListener('input', () => {
+  const len = wishInput.value.length;
+  charCount.textContent = len + ' / 200';
+  releaseBtn.disabled = len < 3;
+});
+
+releaseBtn.addEventListener('click', () => {
+  const wish = wishInput.value.trim();
+  if (wish.length < 3) return;
+  wishEcho.textContent = '\u201c' + wish + '\u201d';
+  launchLantern();
+});
+
+function launchLantern() {
+  flyStage.classList.add('active');
+  drawStars('flyStars');
+
+  flyingLantern.style.transition = 'none';
+  flyingLantern.style.bottom = '28%';
+  flyingLantern.style.left = '50%';
+  flyingLantern.style.transform = 'translateX(-50%) scale(1)';
+  flyingLantern.style.opacity = '1';
+
+  let startTime = null;
+  const duration = 3400;
+
+  function animate(ts) {
+    if (!startTime) startTime = ts;
+    const elapsed = ts - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 2);
+
+    const bottomPct = 28 + eased * 72;
+    const scale = 1 - eased * 0.58;
+    const opacity = progress < 0.68 ? 1 : 1 - ((progress - 0.68) / 0.32);
+    const drift = Math.sin(progress * Math.PI * 3.2) * 20;
+
+    flyingLantern.style.bottom = bottomPct + '%';
+    flyingLantern.style.transform = `translateX(calc(-50% + ${drift}px)) scale(${scale})`;
+    flyingLantern.style.opacity = opacity;
+
+    if (progress < 1) {
+      requestAnimationFrame(animate);
+    } else {
+      flyingLantern.style.opacity = '0';
+      setTimeout(() => messageWrap.classList.add('show'), 200);
+    }
+  }
+
+  requestAnimationFrame(animate);
+}
+
+function resetWish() {
+  flyStage.classList.remove('active');
+  messageWrap.classList.remove('show');
+  flyingLantern.style.opacity = '1';
+  wishInput.value = '';
+  charCount.textContent = '0 / 200';
+  releaseBtn.disabled = true;
+}
+</script>
+</body>
+</html>
